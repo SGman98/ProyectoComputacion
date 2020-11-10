@@ -1,7 +1,6 @@
 package automatas;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 
 public class AFD extends Automata {
@@ -18,10 +17,10 @@ public class AFD extends Automata {
         String[] cadenaLectura = cadena.split("|"); // Separamos la cadena en caracteres individuales
 
         for (int i = 0; i < cadenaLectura.length; i++) {
-            // Crea llave de busqueda en transiciones de forma "q0:a" y mira dentro de las transiciones existentes volviendola el estado actual
-            estadoActual = this.transiciones.get(estadoActual+":"+ cadenaLectura[i]).get(0);
+            String transicion = estadoActual+":"+ cadenaLectura[i]; // Crea llave de busqueda en transiciones de forma "q0:a"
 
-            if(estadoActual != null) { // Mira si existe el estadoActual ( = mira si existe la transicion)
+            if(this.transiciones.get(transicion) != null) { // Mira si existe el estadoActual ( = mira si existe la transicion)
+                estadoActual = this.transiciones.get(transicion).get(0);
                 cadena = cadena.substring(1);
             } else // Cadena Abortada cuando no existe la transicion
                 return false;
