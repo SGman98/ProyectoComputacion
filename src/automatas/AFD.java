@@ -32,9 +32,9 @@ public class AFD extends Automata {
 
     public boolean procesarCadenaConDetalles(String cadena){
         String estadoActual = this.estadoInicial;
-        String[] cadenaLectura = cadena.split("|"); // Separamos la cadena en caracteres individuales
+        String[] cadenaLectura = cadena == ""? new String[0]: cadena.split("|"); // Separamos la cadena en caracteres individuales. si la cadena esta vacia se hace un arreglo vacio
 
-        for (int i = 0; i < cadenaLectura.length; i++) {      
+        for (int i = 0; i < cadenaLectura.length; i++) {   
             String transicion = estadoActual+":"+ cadenaLectura[i]; // Crea llave de busqueda en transiciones de forma "q0:a"
 
             if(this.transiciones.get(transicion) != null) { // Busca si existe la transicion
