@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class AFD extends Automata {
-    public AFD (ArrayList<String> alfabeto, ArrayList<String> estados, String estadoInicial, ArrayList<String> estadosAceptacion, HashMap<String,ArrayList<String>> transiciones) {
+    public AFD(ArrayList<String> alfabeto, ArrayList<String> estados, String estadoInicial,
+            ArrayList<String> estadosAceptacion, HashMap<String, ArrayList<String>> transiciones) {
         super(alfabeto, estados, estadoInicial, estadosAceptacion, transiciones);
 
     }
-    public AFD (String nombreArchivo) {
+
+    public AFD(String nombreArchivo) {
         super(nombreArchivo);
     }
 
@@ -19,9 +21,9 @@ public class AFD extends Automata {
         String[] cadenaLectura = cadena.split("|"); // Separamos la cadena en caracteres individuales
 
         for (int i = 0; i < cadenaLectura.length; i++) {
-            String transicion = estadoActual+":"+ cadenaLectura[i]; // Crea llave de busqueda en transiciones de forma "q0:a"
+            String transicion = estadoActual + ":" + cadenaLectura[i]; // Crea llave de busqueda en transiciones de forma "q0:a"
 
-            if(this.transiciones.get(transicion) != null) { // Mira si existe el estadoActual ( = mira si existe la transicion)
+            if (this.transiciones.get(transicion) != null) { // Mira si existe el estadoActual ( = mira si existe la transicion)
                 estadoActual = this.transiciones.get(transicion).get(0);
                 cadena = cadena.substring(1);
             } else // Cadena Abortada cuando no existe la transicion
@@ -32,37 +34,37 @@ public class AFD extends Automata {
         return this.estadosAceptacion.contains(estadoActual); // Retorna si termino en un estado de aceptacion
     }
 
-    public boolean procesarCadenaConDetalles(String cadena){
-        if (!verificarAlfabeto(cadena)){
+    public boolean procesarCadenaConDetalles(String cadena) {
+        if (!verificarAlfabeto(cadena)) {
             System.out.println("Cadena no cumple con el alfabeto");
             return false;
         }
         String estadoActual = this.estadoInicial;
-        String[] cadenaLectura = cadena == ""? new String[0]: cadena.split("|"); // Separamos la cadena en caracteres individuales. si la cadena esta vacia se hace un arreglo vacio
+        String[] cadenaLectura = cadena == "" ? new String[0] : cadena.split("|"); // Separamos la cadena en caracteres individuales. si la cadena esta vacia se hace un arreglo vacio
 
-        for (int i = 0; i < cadenaLectura.length; i++) {   
-            String transicion = estadoActual+":"+ cadenaLectura[i]; // Crea llave de busqueda en transiciones de forma "q0:a"
+        for (int i = 0; i < cadenaLectura.length; i++) {
+            String transicion = estadoActual + ":" + cadenaLectura[i]; // Crea llave de busqueda en transiciones de forma "q0:a"
 
-            if(this.transiciones.get(transicion) != null) { // Busca si existe la transicion
-                System.out.print("("+estadoActual+","+cadena+")->");
+            if (this.transiciones.get(transicion) != null) { // Busca si existe la transicion
+                System.out.print("(" + estadoActual + "," + cadena + ")->");
                 estadoActual = this.transiciones.get(transicion).get(0);
                 cadena = cadena.substring(1);
             } else { // Cadena Abortada cuando no existe la transicion
-                System.out.println("("+estadoActual+","+cadena+")>>rejected"); 
+                System.out.println("(" + estadoActual + "," + cadena + ")>>rejected");
                 return false;
             }
         }
 
         // Termina de procesar la cadena
         if (this.estadosAceptacion.contains(estadoActual)) { // Mira si termino en un estado de aceptacion
-            System.out.println("("+estadoActual+",$)>>accepted");
+            System.out.println("(" + estadoActual + ",$)>>accepted");
             return true;
         }
-        System.out.println("("+estadoActual+",$)>>rejected"); 
+        System.out.println("(" + estadoActual + ",$)>>rejected");
         return false;
     }
 
-    public boolean procesarListaCadena(String listaCadenas, String nombreArchivo, boolean imprimirPantalla){
+    public boolean procesarListaCadena(String listaCadenas, String nombreArchivo, boolean imprimirPantalla) {
         return true;
     }
 
