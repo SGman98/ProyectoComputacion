@@ -13,6 +13,8 @@ public class AFD extends Automata {
     }
 
     public boolean procesarCadena(String cadena) {
+        if (!verificarAlfabeto(cadena))
+            return false;
         String estadoActual = this.estadoInicial;
         String[] cadenaLectura = cadena.split("|"); // Separamos la cadena en caracteres individuales
 
@@ -31,6 +33,10 @@ public class AFD extends Automata {
     }
 
     public boolean procesarCadenaConDetalles(String cadena){
+        if (!verificarAlfabeto(cadena)){
+            System.out.println("Cadena no cumple con el alfabeto");
+            return false;
+        }
         String estadoActual = this.estadoInicial;
         String[] cadenaLectura = cadena == ""? new String[0]: cadena.split("|"); // Separamos la cadena en caracteres individuales. si la cadena esta vacia se hace un arreglo vacio
 

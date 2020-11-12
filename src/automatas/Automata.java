@@ -30,6 +30,15 @@ public abstract class Automata {
 
     public abstract boolean procesarListaCadena(String listaCadenas, String nombreArchivo, boolean imprimirPantalla);
 
+    public boolean verificarAlfabeto(String cadena) { //Verifica Alfabeto Sigma
+        // String regex = "[";
+        // for (String string : alfabeto)
+        //     regex = regex+string;
+        // regex = regex+"]*";
+        String regex = this.alfabeto.toString().replaceAll(", ", "")+"*"; // Verifica si la cadena entregada esta conformada unicamente por caracteres en el alfabeto
+        return cadena.matches(regex);
+    }
+
     public String toString() {
         return "";
     }
