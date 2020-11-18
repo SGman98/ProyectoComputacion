@@ -43,17 +43,16 @@ public class ADFTest {
         // Test Constructor(alfabeto, estados, estadoInicial, estadosAceptacion,delta)
         crearAfd();
         // Test Booleano procesarCadena(cadena)
-        for (Iterator<Map.Entry<String, Boolean>> it = this.cadenasExpected.entrySet().iterator(); it
-                .hasNext();) {
+        for (Iterator<Map.Entry<String, Boolean>> it = this.cadenasExpected.entrySet().iterator(); it.hasNext();) {
             Map.Entry<String, Boolean> pair = it.next();
-            assertEquals(pair.getValue(),this.afd.procesarCadena(pair.getKey()));
+            assertEquals(pair.getValue(), this.afd.procesarCadena(pair.getKey()));
         }
     }
 
     @Test
     public void procesarCadenaArchivo() {
         // Test Constructor(nombreArchivo)
-        this.afd = new AFD("test.dfa");
+        this.afd = new AFD("default.dfa");
         // Test Booleano procesarCadena(cadena)
         assertEquals(true, this.afd.procesarCadena("baabbaab")); // Cadena aceptada
         assertEquals(false, this.afd.procesarCadena("abaabbaab")); // Cadena no aceptada
@@ -65,10 +64,9 @@ public class ADFTest {
     public void procesarCadenaConDetalles() {
         // Test Booleano procesarCadenaConDetalles(cadena)
         crearAfd();
-        for (Iterator<Map.Entry<String, Boolean>> it = this.cadenasExpected.entrySet().iterator(); it
-                .hasNext();) {
+        for (Iterator<Map.Entry<String, Boolean>> it = this.cadenasExpected.entrySet().iterator(); it.hasNext();) {
             Map.Entry<String, Boolean> pair = it.next();
-            assertEquals(pair.getValue(),this.afd.procesarCadena(pair.getKey()));
+            assertEquals(pair.getValue(), this.afd.procesarCadena(pair.getKey()));
         }
     }
 
@@ -76,15 +74,15 @@ public class ADFTest {
     public void compararArchivoyCodigo() {
         crearAfd();
         // Test String toString()
-        this.afd.stringToFile(this.afd.toString(), "testTexto.dfa"); // Crea un Archivo con el automata creado
+        this.afd.toFile("testTexto.dfa"); // Crea un Archivo con el automata creado
 
         AFD afdFile = new AFD("testTexto.dfa");
 
-        for (Iterator<Map.Entry<String, Boolean>> it = this.cadenasExpected.entrySet().iterator(); it
-                .hasNext();) {
+        for (Iterator<Map.Entry<String, Boolean>> it = this.cadenasExpected.entrySet().iterator(); it.hasNext();) {
             Map.Entry<String, Boolean> pair = it.next();
-            // Compara la misma cadena tanto en el afd del archivo como en el principal de codigo
-            assertEquals(afdFile.procesarCadena(pair.getKey()),this.afd.procesarCadena(pair.getKey()));
+            // Compara la misma cadena tanto en el afd del archivo como en el principal de
+            // codigo
+            assertEquals(afdFile.procesarCadena(pair.getKey()), this.afd.procesarCadena(pair.getKey()));
         }
     }
 }

@@ -10,7 +10,7 @@ public class AFD extends Automata {
     }
 
     public AFD(String nombreArchivo) {
-        super(nombreArchivo);
+        super(nombreArchivo.contains(".dfa")? nombreArchivo: "default.dfa");
     }
 
     public String procesarCadenaTexto(String cadena) {
@@ -45,5 +45,9 @@ public class AFD extends Automata {
         }
         proceso += "(" + estadoActual + ",$)>>rejected";
         return proceso;
+    }
+
+    public void toFile(String nombreArchivo) {
+        super.toFile(nombreArchivo.contains(".dfa")? nombreArchivo: "default.dfa");
     }
 }

@@ -20,15 +20,15 @@ public class Main {
         delta.put("q2:a", new ArrayList<>(Arrays.asList("q1")));
         delta.put("q2:b", new ArrayList<>(Arrays.asList("q1")));
 
-        AFD afd = new AFD(alfabeto, estados, estadoInicial, estadosAceptacion, delta);
-        // AFD afd = new AFD("test.dfa");
+        // AFD afd = new AFD(alfabeto, estados, estadoInicial, estadosAceptacion, delta);
+        AFD afd = new AFD("test.dfa");
 
         cadenas.add("aabab");
         cadenas.add("aababa");
         cadenas.add("");
 
-        afd.procesarListaCadena(cadenas, "AFD.txt", false);
-        afd.toString();
+        afd.procesarListaCadena(cadenas, "AFD", false);
+        afd.toFile("ADF");
     }
 
 }

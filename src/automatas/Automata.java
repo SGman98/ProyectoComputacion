@@ -39,10 +39,20 @@ public abstract class Automata {
         this.estadosAceptacion = new ArrayList<>();
         this.transiciones = new HashMap<>();
         try {
-            // Al usar los test en visual studio se crea una carpeta bin, por lo que esto es
-            // para diferenciar los test
+            // Al usar los test en visual studio se crea una carpeta bin,
+            // por lo que esto es para diferenciar los test
             boolean inTest = Files.exists(Paths.get("bin"), LinkOption.NOFOLLOW_LINKS);
-            File myFile = new File((inTest ? "bin\\" : "") + "resources\\" + nombreArchivo);
+            int index = nombreArchivo.lastIndexOf('.');
+            String extension = (index > 0) ? nombreArchivo.substring(index + 1) : "";
+            if (!Files.exists(Paths.get((inTest ? "bin\\" : "") + "resources\\" + nombreArchivo),
+                    LinkOption.NOFOLLOW_LINKS)) {
+                System.out.println("El archivo " + nombreArchivo + " no existe. Cargando archivo por defecto: default."
+                        + extension);
+                nombreArchivo = (inTest ? "bin\\" : "") + "resources\\default." + extension;
+            } else {
+                nombreArchivo = (inTest ? "bin\\" : "") + "resources\\" + nombreArchivo;
+            }
+            File myFile = new File(nombreArchivo);
             Scanner myReader = new Scanner(myFile);
             String seccion = "";
             while (myReader.hasNextLine()) {
@@ -91,9 +101,10 @@ public abstract class Automata {
 
     public void procesarListaCadena(ArrayList<String> listaCadenas, String nombreArchivo, boolean imprimirPantalla) {
         try {
-            this.createOutFile(nombreArchivo); // Crea el archivo
-            boolean inTest = Files.exists(Paths.get("bin"), LinkOption.NOFOLLOW_LINKS);
-            FileWriter myWriter = new FileWriter((inTest ? "bin\\" : "") + "resources\\" + nombreArchivo);
+
+            // boolean inTest = Files.exists(Paths.get("bin"), LinkOption.NOFOLLOW_LINKS);
+            FileWriter myWriter = new FileWriter(
+                    this.createOutFile(nombreArchivo.contains(".") ? nombreArchivo : nombreArchivo + ".txt"));
             for (String string : listaCadenas) {
                 // Escribe el archivo con el formato dado
                 myWriter.write(string + "\t" + this.procesarCadenaTexto(string) + "\t"
@@ -151,43 +162,43 @@ public abstract class Automata {
 
     abstract String procesarCadenaTexto(String cadena); // Procesa la cadena y devuelve el texto
 
-    public void stringToFile(String string, String nombreArchivo) {
+    public void toFile(String nombreArchivo) {
         try {
-            nombreArchivo = createOutFile(nombreArchivo);
-            boolean inTest = Files.exists(Paths.get("bin"), LinkOption.NOFOLLOW_LINKS);
-            FileWriter myWriter = new FileWriter((inTest ? "bin\\" : "") + "resources\\" + nombreArchivo);
-            myWriter.write(string);
+            FileWriter myWriter = new FileWriter(createOutFile(nombreArchivo));
+            myWriter.write(this.toString());
             myWriter.close();
         } catch (IOException e) {
             System.out.println("Error: " + e);
         }
     }
 
-    String createOutFile(String nombreArchivo) throws IOException { // Deberia si o si crear un archivo
-        // Intenta crear el archivo
+    // Deberia si o si crear un archivo
+    File createOutFile(String nombreArchivo) throws IOException {
+        // Intenta crear el archivo y revisa si el metodo fue llamado desde un JUnit
+        // Test
         boolean inTest = Files.exists(Paths.get("bin"), LinkOption.NOFOLLOW_LINKS);
         File myFile = new File((inTest ? "bin\\" : "") + "resources\\" + nombreArchivo);
         int index = nombreArchivo.lastIndexOf('.');
-        String extension = (index > 0)? nombreArchivo.substring(index + 1) : "";
+        String extension = (index > 0) ? nombreArchivo.substring(index + 1) : "";
 
         if (myFile.createNewFile()) {
-            System.out.println("File created: " + myFile.getName());
+            System.out.println("Archivo Creado: " + myFile.getName());
         } else {
             // Si no existe crea un archivo con un nobre por defecto
-            System.out.println("File already exists. Creating Default File");
-            myFile = new File((inTest ? "bin\\" : "") + "resources\\default 0."+extension);
+            System.out.println("El archivo " + myFile.getName() + " ya existe. Creando archivo por defecto");
+            myFile = new File((inTest ? "bin\\" : "") + "resources\\default." + extension);
             int filenum = 0;
 
             if (myFile.exists() && !myFile.isDirectory()) {
                 while (myFile.exists()) {
                     filenum++;
-                    myFile = new File((inTest ? "bin\\" : "") + "resources\\default " + filenum + "."+extension);
+                    myFile = new File((inTest ? "bin\\" : "") + "resources\\default " + filenum + "." + extension);
                 }
             }
             myFile.createNewFile();
-            nombreArchivo = "default " + filenum + "."+extension;
+            System.out.println("Archivo Creado: " + myFile.getName());
         }
-        return nombreArchivo;
+        return myFile;
     }
 
     boolean verificarAlfabeto(String cadena) { // Verifica Alfabeto Sigma
