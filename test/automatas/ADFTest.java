@@ -22,11 +22,7 @@ public class ADFTest {
         ArrayList<String> estados = new ArrayList<>(Arrays.asList("q0", "q1", "q2"));
         String estadoInicial = "q0";
         ArrayList<String> estadosAceptacion = new ArrayList<>(Arrays.asList("q0"));
-        HashMap<String, ArrayList<String>> delta = new HashMap<String, ArrayList<String>>();
-        delta.put("q0:a", new ArrayList<>(Arrays.asList("q1")));
-        delta.put("q0:b", new ArrayList<>(Arrays.asList("q2")));
-        delta.put("q1:b", new ArrayList<>(Arrays.asList("q0")));
-        delta.put("q2:a", new ArrayList<>(Arrays.asList("q0")));
+        ArrayList<String> delta = new ArrayList<String>(Arrays.asList("q0:a>q1", "q0:b>q2", "q1:b>q0", "q2:a>q0"));
 
         afd = new AFD(alfabeto, estados, estadoInicial, estadosAceptacion, delta);
 
@@ -85,4 +81,5 @@ public class ADFTest {
             assertEquals(afdFile.procesarCadena(pair.getKey()), this.afd.procesarCadena(pair.getKey()));
         }
     }
+
 }

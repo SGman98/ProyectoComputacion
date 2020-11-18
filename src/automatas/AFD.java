@@ -1,18 +1,18 @@
 package automatas;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class AFD extends Automata {
     public AFD(ArrayList<String> alfabeto, ArrayList<String> estados, String estadoInicial,
-            ArrayList<String> estadosAceptacion, HashMap<String, ArrayList<String>> transiciones) {
+            ArrayList<String> estadosAceptacion, ArrayList<String> transiciones) {
         super(alfabeto, estados, estadoInicial, estadosAceptacion, transiciones);
     }
 
     public AFD(String nombreArchivo) {
-        super(nombreArchivo.contains(".dfa")? nombreArchivo: "default.dfa");
+        super(nombreArchivo.contains(".dfa") ? nombreArchivo : "default.dfa");
     }
 
+    @Override
     public String procesarCadenaTexto(String cadena) {
         String proceso = "";
         if (!verificarAlfabeto(cadena)) {
@@ -20,14 +20,10 @@ public class AFD extends Automata {
             return "No cumple con el alfabeto";
         }
         String estadoActual = this.estadoInicial;
-        // Separamos la cadena en caracteres individuales. si la cadena esta vacia se
-        // hace un arreglo vacio
-        String[] cadenaLectura = cadena == "" ? new String[0] : cadena.split("|");
 
-        for (int i = 0; i < cadenaLectura.length; i++) {
+        while (!cadena.isEmpty()) {
             // Crea llave de busqueda en transiciones de forma "q0:a"
-            String transicion = estadoActual + ":" + cadenaLectura[i];
-
+            String transicion = estadoActual + ":" + cadena.charAt(0);
             if (this.transiciones.get(transicion) != null) { // Busca si existe la transicion
                 proceso += "(" + estadoActual + "," + cadena + ")->";
                 estadoActual = this.transiciones.get(transicion).get(0);
@@ -48,6 +44,6 @@ public class AFD extends Automata {
     }
 
     public void toFile(String nombreArchivo) {
-        super.toFile(nombreArchivo.contains(".dfa")? nombreArchivo: "default.dfa");
+        super.toFile(nombreArchivo.contains(".dfa") ? nombreArchivo : "default.dfa");
     }
 }

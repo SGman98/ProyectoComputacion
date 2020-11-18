@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 
 import automatas.AFD;
 
@@ -9,26 +8,23 @@ public class Main {
         ArrayList<String> alfabeto = new ArrayList<>(Arrays.asList("a", "b"));
         ArrayList<String> estados = new ArrayList<>(Arrays.asList("q0", "q1", "q2"));
         String estadoInicial = "q0";
-        ArrayList<String> estadosAceptacion = new ArrayList<>(Arrays.asList("q0", "q2"));
-        HashMap<String, ArrayList<String>> delta = new HashMap<String, ArrayList<String>>();
+        ArrayList<String> estadosAceptacion = new ArrayList<>(Arrays.asList("q0"));
+        ArrayList<String> delta = new ArrayList<>(Arrays.asList("q0:a>q1", "q0:b>q2", "q1:b>q0", "q2:a>q0"));
         ArrayList<String> cadenas = new ArrayList<>();
 
-        delta.put("q0:a", new ArrayList<>(Arrays.asList("q0")));
-        delta.put("q0:b", new ArrayList<>(Arrays.asList("q1")));
-        delta.put("q1:a", new ArrayList<>(Arrays.asList("q1")));
-        delta.put("q1:b", new ArrayList<>(Arrays.asList("q2")));
-        delta.put("q2:a", new ArrayList<>(Arrays.asList("q1")));
-        delta.put("q2:b", new ArrayList<>(Arrays.asList("q1")));
+        AFD afd = new AFD(alfabeto, estados, estadoInicial, estadosAceptacion, delta);
+        // AFD afd = new AFD("test.dfa");
 
-        // AFD afd = new AFD(alfabeto, estados, estadoInicial, estadosAceptacion, delta);
-        AFD afd = new AFD("test.dfa");
-
+        cadenas.add("ababbaba");
         cadenas.add("aabab");
         cadenas.add("aababa");
         cadenas.add("");
 
-        afd.procesarListaCadena(cadenas, "AFD", false);
-        afd.toFile("ADF");
+        for (String string : cadenas) {
+            afd.procesarCadenaConDetalles(string);
+        }
+        afd.procesarListaCadena(cadenas, "AFD", true);
+        afd.toFile("ADF.dfa");
     }
 
 }

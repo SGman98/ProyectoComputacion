@@ -7,7 +7,6 @@ import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -16,19 +15,22 @@ import java.util.Scanner;
 // Clase abstracta con la mayoria de los atributos y metodos necesarios para todas las clases
 
 public abstract class Automata {
-    ArrayList<String> alfabeto; // Lenguaje de Cinta Sigma (Para automatas con pila)
+    ArrayList<String> alfabeto; // Lenguaje de Cinta Sigma
     ArrayList<String> estados;
     String estadoInicial;
     ArrayList<String> estadosAceptacion;
     HashMap<String, ArrayList<String>> transiciones; // transicion q0:a>q1 --> <q0:a, q1>
 
     public Automata(ArrayList<String> alfabeto, ArrayList<String> estados, String estadoInicial,
-            ArrayList<String> estadosAceptacion, HashMap<String, ArrayList<String>> transiciones) {
+            ArrayList<String> estadosAceptacion, ArrayList<String> transiciones) {
         this.alfabeto = alfabeto;
         this.estados = estados;
         this.estadoInicial = estadoInicial;
         this.estadosAceptacion = estadosAceptacion;
-        this.transiciones = transiciones;
+        this.transiciones = new HashMap<String, ArrayList<String>>();
+        for (String string : transiciones) {
+            this.ponerTrancisiones(string);
+        }
     }
 
     public Automata(String nombreArchivo) {
@@ -74,9 +76,7 @@ public abstract class Automata {
                             this.estadosAceptacion.add(data);
                             break;
                         case "#transitions":
-                            String transicion = data.split(">")[0];
-                            String transicionFinal = data.split(">")[1];
-                            this.transiciones.put(transicion, new ArrayList<>(Arrays.asList(transicionFinal)));
+                            this.ponerTrancisiones(data);
                             break;
                         default:
                             break;
@@ -150,7 +150,13 @@ public abstract class Automata {
             for (Iterator<Map.Entry<String, ArrayList<String>>> it = this.transiciones.entrySet().iterator(); it
                     .hasNext();) {
                 Map.Entry<String, ArrayList<String>> pair = it.next();
-                string += pair.getKey() + ">" + pair.getValue().get(0) + "\n";
+                string += pair.getKey() + ">";
+
+                for (String string2 : pair.getValue()) {
+                    string += string2 + ";";
+                }
+
+                string = string.contains(";") ? string.replaceFirst(".$", "") + "\n" : pair.getValue().get(1) + "\n";
             }
             // string += "\n";
         }
@@ -161,6 +167,20 @@ public abstract class Automata {
     // Metodos Utiles no propuestos
 
     abstract String procesarCadenaTexto(String cadena); // Procesa la cadena y devuelve el texto
+
+    public void ponerTrancisiones(String transiciones) { // Añadir las trancisiones
+        String[] transicion;
+        ArrayList<String> transicionFinal = new ArrayList<String>();
+
+        transicion = transiciones.split(">");
+        for (String string : transicion[1].split(";")) {
+            transicionFinal.add(string);
+        }
+        if (transicion[1].split(";").length == 0)
+            transicionFinal.add(transicion[1]);
+        this.transiciones.put(transicion[0], new ArrayList<String>(transicionFinal));
+        transicionFinal.clear();
+    }
 
     public void toFile(String nombreArchivo) {
         try {

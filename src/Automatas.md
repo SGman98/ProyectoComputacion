@@ -2,6 +2,18 @@
 
 ## Comprender Atributos
 
+- ```java
+    ArrayList<String> alfabeto; // Lenguaje de Cinta Sigma
+    ArrayList<String> estados;
+    String estadoInicial;
+    ArrayList<String> estadosAceptacion;
+    HashMap<String, ArrayList<String>> transiciones; 
+        //  Automata determinista           q0:a>q1             q0:a    [q1]
+        //  Automata no determinista        q0:a>q1;q2          q0:a    [q1,q2]
+        //  Automata determinista pila      q0:a:A>q1:$         q0:a:A  [q1:$]
+        //  Automata no determinista pila   q0:a:A>q1:B;q2:$    q0:a:A  [q1:B,q2:$]
+    ```
+
 ## Crear nuevos modelos
 
 - ### Constructores
