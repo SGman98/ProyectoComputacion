@@ -1,9 +1,16 @@
 package automatas;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.LinkOption;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Scanner;
 
 // Clase abstracta con la mayoria de los atributos y metodos necesarios para todas las clases
@@ -23,26 +30,28 @@ public abstract class Automata {
         this.estadosAceptacion = estadosAceptacion;
         this.transiciones = transiciones;
     }
-    
+
     public Automata(String nombreArchivo) {
-        // Idea: El archivo esta dividido en secciones
-        // Leer el inicio de la seccion y comenzar un bucle de lectura hasta que encuentre otra seccion
+        // Idea: El archivo esta dividido en secciones Leer el inicio de la seccion y
+        // comenzar un bucle de lectura hasta que encuentre otra seccion
         this.alfabeto = new ArrayList<>();
         this.estados = new ArrayList<>();
         this.estadosAceptacion = new ArrayList<>();
         this.transiciones = new HashMap<>();
-        
         try {
-            File myobj = new File(nombreArchivo);
-            Scanner myReader = new Scanner(myobj);
+            // Al usar los test en visual studio se crea una carpeta bin, por lo que esto es
+            // para diferenciar los test
+            boolean inTest = Files.exists(Paths.get("bin"), LinkOption.NOFOLLOW_LINKS);
+            File myFile = new File((inTest ? "bin\\" : "") + "resources\\" + nombreArchivo);
+            Scanner myReader = new Scanner(myFile);
             String seccion = "";
             while (myReader.hasNextLine()) {
                 String data = myReader.nextLine();
-                // System.out.println(data);
-                if(data.contains("#") || data.equals("")) seccion = data;
+                if (data.contains("#") || data.equals(""))
+                    seccion = data;
                 else {
                     switch (seccion) {
-                        case "#alphabet":   
+                        case "#alphabet":
                             this.alfabeto.add(data);
                             break;
                         case "#states":
@@ -65,28 +74,132 @@ public abstract class Automata {
                 }
             }
             myReader.close();
-        } catch (Exception e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
+        } catch (IOException e) {
+            System.out.println("Error: " + e);
         }
     }
 
-    public abstract boolean procesarCadena(String cadena);
+    public boolean procesarCadena(String cadena) { // Apartir de la cadenaprocesada detecta la aceptacion
+        return this.procesarCadenaTexto(cadena).contains("accepted");
+    }
 
-    public abstract boolean procesarCadenaConDetalles(String cadena);
+    public boolean procesarCadenaConDetalles(String cadena) { // Apartir de la cadenaprocesada detecta la aceptacion
+        String resultado = this.procesarCadenaTexto(cadena);
+        System.out.println(resultado); // Muestra el resultado en pantalla
+        return resultado.contains("accepted");
+    }
 
-    public abstract boolean procesarListaCadena(String listaCadenas, String nombreArchivo, boolean imprimirPantalla);
+    public void procesarListaCadena(ArrayList<String> listaCadenas, String nombreArchivo, boolean imprimirPantalla) {
+        try {
+            this.createOutFile(nombreArchivo); // Crea el archivo
+            boolean inTest = Files.exists(Paths.get("bin"), LinkOption.NOFOLLOW_LINKS);
+            FileWriter myWriter = new FileWriter((inTest ? "bin\\" : "") + "resources\\" + nombreArchivo);
+            for (String string : listaCadenas) {
+                // Escribe el archivo con el formato dado
+                myWriter.write(string + "\t" + this.procesarCadenaTexto(string) + "\t"
+                        + (imprimirPantalla ? this.procesarCadenaConDetalles(string) ? "yes" : "no"
+                                : this.procesarCadena(string) ? "yes" : "no")
+                        + "\n");
+            }
+            myWriter.close();
+        } catch (IOException e) {
+            System.out.println("Error: " + e);
+        }
+    }
 
-    public boolean verificarAlfabeto(String cadena) { // Verifica Alfabeto Sigma
-        // String regex = "[";
-        // for (String string : alfabeto)
-        // regex = regex+string;
-        // regex = regex+"]*";
-        String regex = this.alfabeto.toString().replaceAll(", ", "") + "*"; // Verifica si la cadena entregada esta conformada unicamente por caracteres en el alfabeto
+    public String toString() { // Crea Un string con la forma de entrada del PDF
+        String string = "";
+        if (!this.alfabeto.isEmpty()) {
+            string += "#alphabet\n";
+            for (String s : this.alfabeto) {
+                string += s + "\n";
+            }
+            string += "\n";
+        }
+        if (!this.estados.isEmpty()) {
+            string += "#states\n";
+            for (String s : this.estados) {
+                string += s + "\n";
+            }
+            string += "\n";
+        }
+        if (!this.estadoInicial.equals("")) {
+            string += "#initial\n";
+            string += this.estadoInicial + "\n\n";
+        }
+        if (!this.estadosAceptacion.isEmpty()) {
+            string += "#accepting\n";
+            for (String s : this.estadosAceptacion) {
+                string += s + "\n";
+            }
+            string += "\n";
+        }
+        if (!this.transiciones.isEmpty()) {
+            string += "#transitions\n";
+            for (Iterator<Map.Entry<String, ArrayList<String>>> it = this.transiciones.entrySet().iterator(); it
+                    .hasNext();) {
+                Map.Entry<String, ArrayList<String>> pair = it.next();
+                string += pair.getKey() + ">" + pair.getValue().get(0) + "\n";
+            }
+            // string += "\n";
+        }
+
+        return string;
+    }
+
+    // Metodos Utiles no propuestos
+
+    abstract String procesarCadenaTexto(String cadena); // Procesa la cadena y devuelve el texto
+
+    public void stringToFile(String string, String nombreArchivo) {
+        try {
+            nombreArchivo = createOutFile(nombreArchivo);
+            boolean inTest = Files.exists(Paths.get("bin"), LinkOption.NOFOLLOW_LINKS);
+            FileWriter myWriter = new FileWriter((inTest ? "bin\\" : "") + "resources\\" + nombreArchivo);
+            myWriter.write(string);
+            myWriter.close();
+        } catch (IOException e) {
+            System.out.println("Error: " + e);
+        }
+    }
+
+    String createOutFile(String nombreArchivo) throws IOException { // Deberia si o si crear un archivo
+        // Intenta crear el archivo
+        boolean inTest = Files.exists(Paths.get("bin"), LinkOption.NOFOLLOW_LINKS);
+        File myFile = new File((inTest ? "bin\\" : "") + "resources\\" + nombreArchivo);
+        int index = nombreArchivo.lastIndexOf('.');
+        String extension = (index > 0)? nombreArchivo.substring(index + 1) : "";
+
+        if (myFile.createNewFile()) {
+            System.out.println("File created: " + myFile.getName());
+        } else {
+            // Si no existe crea un archivo con un nobre por defecto
+            System.out.println("File already exists. Creating Default File");
+            myFile = new File((inTest ? "bin\\" : "") + "resources\\default 0."+extension);
+            int filenum = 0;
+
+            if (myFile.exists() && !myFile.isDirectory()) {
+                while (myFile.exists()) {
+                    filenum++;
+                    myFile = new File((inTest ? "bin\\" : "") + "resources\\default " + filenum + "."+extension);
+                }
+            }
+            myFile.createNewFile();
+            nombreArchivo = "default " + filenum + "."+extension;
+        }
+        return nombreArchivo;
+    }
+
+    boolean verificarAlfabeto(String cadena) { // Verifica Alfabeto Sigma
+        String regex = "[";
+        for (String string : alfabeto)
+            regex = regex + string;
+        regex = regex + "]*";
+        // String regex = this.alfabeto.toString().replaceAll(", ", "") + "*"; //
+        // Verifica si la cadena entregada esta
+        // conformada unicamente por caracteres en
+        // el alfabeto
         return cadena.matches(regex);
     }
 
-    public String toString() {
-        return "";
-    }
 }
