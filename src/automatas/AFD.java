@@ -6,6 +6,7 @@ public class AFD extends Automata {
     public AFD(ArrayList<String> alfabeto, ArrayList<String> estados, String estadoInicial,
             ArrayList<String> estadosAceptacion, ArrayList<String> transiciones) {
         super(alfabeto, estados, estadoInicial, estadosAceptacion, transiciones);
+        this.extension = ".dfa";
     }
 
     public AFD(String nombreArchivo) {

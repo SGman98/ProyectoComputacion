@@ -21,6 +21,8 @@ public abstract class Automata {
     ArrayList<String> estadosAceptacion;
     HashMap<String, ArrayList<String>> transiciones; // transicion q0:a>q1 --> <q0:a, q1>
 
+    String extension;
+
     public Automata(ArrayList<String> alfabeto, ArrayList<String> estados, String estadoInicial,
             ArrayList<String> estadosAceptacion, ArrayList<String> transiciones) {
         this.alfabeto = alfabeto;
@@ -40,17 +42,19 @@ public abstract class Automata {
         this.estados = new ArrayList<>();
         this.estadosAceptacion = new ArrayList<>();
         this.transiciones = new HashMap<>();
+
+        int index = nombreArchivo.lastIndexOf('.');
+        this.extension = (index > 0) ? nombreArchivo.substring(index + 1) : "";
         try {
             // Al usar los test en visual studio se crea una carpeta bin,
             // por lo que esto es para diferenciar los test
             boolean inTest = Files.exists(Paths.get("bin"), LinkOption.NOFOLLOW_LINKS);
-            int index = nombreArchivo.lastIndexOf('.');
-            String extension = (index > 0) ? nombreArchivo.substring(index + 1) : "";
+            
             if (!Files.exists(Paths.get((inTest ? "bin\\" : "") + "resources\\" + nombreArchivo),
                     LinkOption.NOFOLLOW_LINKS)) {
                 System.out.println("El archivo " + nombreArchivo + " no existe. Cargando archivo por defecto: default."
-                        + extension);
-                nombreArchivo = (inTest ? "bin\\" : "") + "resources\\default." + extension;
+                        + this.extension);
+                nombreArchivo = (inTest ? "bin\\" : "") + "resources\\default." + this.extension;
             } else {
                 nombreArchivo = (inTest ? "bin\\" : "") + "resources\\" + nombreArchivo;
             }
@@ -183,6 +187,7 @@ public abstract class Automata {
     }
 
     public void toFile(String nombreArchivo) {
+        nombreArchivo = nombreArchivo.contains(this.extension) ? nombreArchivo : "default"+this.extension;
         try {
             FileWriter myWriter = new FileWriter(createOutFile(nombreArchivo));
             myWriter.write(this.toString());
@@ -199,20 +204,20 @@ public abstract class Automata {
         boolean inTest = Files.exists(Paths.get("bin"), LinkOption.NOFOLLOW_LINKS);
         File myFile = new File((inTest ? "bin\\" : "") + "resources\\" + nombreArchivo);
         int index = nombreArchivo.lastIndexOf('.');
-        String extension = (index > 0) ? nombreArchivo.substring(index + 1) : "";
+        // String extension = (index > 0) ? nombreArchivo.substring(index + 1) : "";
 
         if (myFile.createNewFile()) {
             System.out.println("Archivo Creado: " + myFile.getName());
         } else {
             // Si no existe crea un archivo con un nobre por defecto
             System.out.println("El archivo " + myFile.getName() + " ya existe. Creando archivo por defecto");
-            myFile = new File((inTest ? "bin\\" : "") + "resources\\default." + extension);
+            myFile = new File((inTest ? "bin\\" : "") + "resources\\default." + this.extension);
             int filenum = 0;
 
             if (myFile.exists() && !myFile.isDirectory()) {
                 while (myFile.exists()) {
                     filenum++;
-                    myFile = new File((inTest ? "bin\\" : "") + "resources\\default " + filenum + "." + extension);
+                    myFile = new File((inTest ? "bin\\" : "") + "resources\\default " + filenum + "." + this.extension);
                 }
             }
             myFile.createNewFile();
