@@ -22,25 +22,20 @@ public class AFD extends Automata {
         }
         String estadoActual = this.estadoInicial;
 
-        while (!cadena.isEmpty()) {
-            // Crea llave de busqueda en transiciones de forma "q0:a"
-            String transicion = estadoActual + ":" + cadena.charAt(0);
-            if (this.transiciones.get(transicion) != null) { // Busca si existe la transicion
-                proceso += "(" + estadoActual + "," + cadena + ")->";
-                estadoActual = this.transiciones.get(transicion).get(0);
-                cadena = cadena.substring(1);
-            } else { // Cadena Abortada cuando no existe la transicion
-                proceso += "(" + estadoActual + "," + cadena + ")>>rejected";
-                return proceso;
-            }
+        // Crea llave de busqueda en transiciones de forma "q0:a"
+        String transicion = estadoActual + ":" + (!cadena.isEmpty() ? cadena.charAt(0) : " ");
+
+        while (this.transiciones.get(transicion) != null) { // Mientras la transicion exista
+            proceso += "(" + estadoActual + "," + cadena + ")->";
+            estadoActual = this.transiciones.get(transicion).get(0);
+            cadena = cadena.substring(1);
+
+            transicion = estadoActual + ":" + (!cadena.isEmpty() ? cadena.charAt(0) : " ");
         }
 
         // Termina de procesar la cadena
-        if (this.estadosAceptacion.contains(estadoActual)) { // Mira si termino en un estado de aceptacion
-            proceso += "(" + estadoActual + ",$)>>accepted";
-            return proceso;
-        }
-        proceso += "(" + estadoActual + ",$)>>rejected";
-        return proceso;
+        proceso += "(" + estadoActual + "," + (cadena.isEmpty() ? "$" : cadena) + ")>>";
+        // Mira si termino en un estado de aceptacion
+        return proceso + (this.estadosAceptacion.contains(estadoActual) ? "accepted" : "rejected");
     }
 }
