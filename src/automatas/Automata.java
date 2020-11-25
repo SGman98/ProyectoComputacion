@@ -1,4 +1,4 @@
-package automatas;
+package src.automatas;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -44,7 +44,7 @@ public abstract class Automata {
         this.transiciones = new HashMap<>();
 
         int index = nombreArchivo.lastIndexOf('.');
-        this.extension = (index > 0) ? nombreArchivo.substring(index + 1) : "";
+        this.extension = "." + ((index > 0) ? nombreArchivo.substring(index + 1) : "");
         try {
             // Al usar los test en visual studio se crea una carpeta bin,
             // por lo que esto es para diferenciar los test
@@ -52,15 +52,17 @@ public abstract class Automata {
             
             if (!Files.exists(Paths.get((inTest ? "bin\\" : "") + "resources\\" + nombreArchivo),
                     LinkOption.NOFOLLOW_LINKS)) {
-                System.out.println("El archivo " + nombreArchivo + " no existe. Cargando archivo por defecto: default."
+                System.out.println("El archivo " + nombreArchivo + " no existe. Cargando archivo por defecto: default"
                         + this.extension);
-                nombreArchivo = (inTest ? "bin\\" : "") + "resources\\default." + this.extension;
+                nombreArchivo = (inTest ? "bin\\" : "") + "resources\\default" + this.extension;
             } else {
                 nombreArchivo = (inTest ? "bin\\" : "") + "resources\\" + nombreArchivo;
             }
             File myFile = new File(nombreArchivo);
             Scanner myReader = new Scanner(myFile);
             String seccion = "";
+            if (myReader.hasNextLine()) // Revisa la primera linea del archivo la cual tiene que ser la extension
+                System.out.println("La extension " + (this.extension.equals(myReader.nextLine())? "corresponde" : "no corresponde"));
             while (myReader.hasNextLine()) {
                 String data = myReader.nextLine();
                 if (data.contains("#") || data.equals(""))
@@ -68,6 +70,7 @@ public abstract class Automata {
                 else {
                     switch (seccion) {
                         case "#alphabet":
+                        case "#inputAlphabet":
                             this.alfabeto.add(data);
                             break;
                         case "#states":
@@ -123,7 +126,7 @@ public abstract class Automata {
     }
 
     public String toString() { // Crea Un string con la forma de entrada del PDF
-        String string = "";
+        String string = this.extension + "\n";
         if (!this.alfabeto.isEmpty()) {
             string += "#alphabet\n";
             for (String s : this.alfabeto) {
@@ -154,7 +157,7 @@ public abstract class Automata {
             for (Iterator<Map.Entry<String, ArrayList<String>>> it = this.transiciones.entrySet().iterator(); it
                     .hasNext();) {
                 Map.Entry<String, ArrayList<String>> pair = it.next();
-                string += pair.getKey() + ">";
+                string += pair.getKey() + "~";
 
                 for (String string2 : pair.getValue()) {
                     string += string2 + ";";
@@ -172,11 +175,11 @@ public abstract class Automata {
 
     abstract String procesarCadenaTexto(String cadena); // Procesa la cadena y devuelve el texto
 
-    public void ponerTrancisiones(String transiciones) { // Añadir las trancisiones
+    void ponerTrancisiones(String transiciones) { // Añadir las trancisiones
         String[] transicion;
         ArrayList<String> transicionFinal = new ArrayList<String>();
 
-        transicion = transiciones.split(">");
+        transicion = transiciones.split("\\~");
         for (String string : transicion[1].split(";")) {
             transicionFinal.add(string);
         }
@@ -186,8 +189,34 @@ public abstract class Automata {
         transicionFinal.clear();
     }
 
+    File createOutFile(String nombreArchivo) throws IOException {
+        // Intenta crear el archivo y revisa si el metodo fue llamado desde un JUnit
+        // Test
+        boolean inTest = Files.exists(Paths.get("bin"), LinkOption.NOFOLLOW_LINKS);
+        File myFile = new File((inTest ? "bin\\" : "") + "resources\\" + nombreArchivo);
+
+        if (myFile.createNewFile()) {
+            System.out.println("Archivo Creado: " + myFile.getName());
+        } else {
+            // Si no existe crea un archivo con un nobre por defecto
+            System.out.println("El archivo " + myFile.getName() + " ya existe. Creando archivo por defecto");
+            myFile = new File((inTest ? "bin\\" : "") + "resources\\default" + this.extension);
+            int filenum = 0;
+
+            if (myFile.exists() && !myFile.isDirectory()) {
+                while (myFile.exists()) {
+                    filenum++;
+                    myFile = new File((inTest ? "bin\\" : "") + "resources\\default " + filenum + this.extension);
+                }
+            }
+            myFile.createNewFile();
+            System.out.println("Archivo Creado: " + myFile.getName());
+        }
+        return myFile;
+    }
+
     public void toFile(String nombreArchivo) {
-        nombreArchivo = nombreArchivo.contains(this.extension) ? nombreArchivo : "default"+this.extension;
+        nombreArchivo = nombreArchivo.contains(this.extension) ? nombreArchivo : "default" + this.extension;
         try {
             FileWriter myWriter = new FileWriter(createOutFile(nombreArchivo));
             myWriter.write(this.toString());
@@ -197,38 +226,9 @@ public abstract class Automata {
         }
     }
 
-    // Deberia si o si crear un archivo
-    File createOutFile(String nombreArchivo) throws IOException {
-        // Intenta crear el archivo y revisa si el metodo fue llamado desde un JUnit
-        // Test
-        boolean inTest = Files.exists(Paths.get("bin"), LinkOption.NOFOLLOW_LINKS);
-        File myFile = new File((inTest ? "bin\\" : "") + "resources\\" + nombreArchivo);
-        int index = nombreArchivo.lastIndexOf('.');
-        // String extension = (index > 0) ? nombreArchivo.substring(index + 1) : "";
-
-        if (myFile.createNewFile()) {
-            System.out.println("Archivo Creado: " + myFile.getName());
-        } else {
-            // Si no existe crea un archivo con un nobre por defecto
-            System.out.println("El archivo " + myFile.getName() + " ya existe. Creando archivo por defecto");
-            myFile = new File((inTest ? "bin\\" : "") + "resources\\default." + this.extension);
-            int filenum = 0;
-
-            if (myFile.exists() && !myFile.isDirectory()) {
-                while (myFile.exists()) {
-                    filenum++;
-                    myFile = new File((inTest ? "bin\\" : "") + "resources\\default " + filenum + "." + this.extension);
-                }
-            }
-            myFile.createNewFile();
-            System.out.println("Archivo Creado: " + myFile.getName());
-        }
-        return myFile;
-    }
-
-    boolean verificarAlfabeto(String cadena) { // Verifica Alfabeto Sigma
+    boolean verificarAlfabetoSigma(String cadena) { // Verifica Alfabeto Sigma
         String regex = "[";
-        for (String string : alfabeto)
+        for (String string : this.alfabeto)
             regex = regex + string;
         regex = regex + "]*";
         // String regex = this.alfabeto.toString().replaceAll(", ", "") + "*"; //

@@ -7,9 +7,11 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.junit.*;
+
+import src.automatas.*;
+
 import static org.junit.Assert.assertEquals;
 
-import automatas.AFD;
 
 public class ADFTest {
     AFD afd;
@@ -22,7 +24,7 @@ public class ADFTest {
         ArrayList<String> estados = new ArrayList<>(Arrays.asList("q0", "q1", "q2"));
         String estadoInicial = "q0";
         ArrayList<String> estadosAceptacion = new ArrayList<>(Arrays.asList("q0"));
-        ArrayList<String> delta = new ArrayList<String>(Arrays.asList("q0:a>q1", "q0:b>q2", "q1:b>q0", "q2:a>q0"));
+        ArrayList<String> delta = new ArrayList<String>(Arrays.asList("q0:a~q1", "q0:b~q2", "q1:b~q0", "q2:a~q0"));
 
         afd = new AFD(alfabeto, estados, estadoInicial, estadosAceptacion, delta);
 
@@ -48,7 +50,7 @@ public class ADFTest {
     @Test
     public void procesarCadenaArchivo() {
         // Test Constructor(nombreArchivo)
-        this.afd = new AFD("default.dfa");
+        this.afd = new AFD("default");
         // Test Booleano procesarCadena(cadena)
         assertEquals(true, this.afd.procesarCadena("baabbaab")); // Cadena aceptada
         assertEquals(false, this.afd.procesarCadena("abaabbaab")); // Cadena no aceptada
@@ -70,9 +72,9 @@ public class ADFTest {
     public void compararArchivoyCodigo() {
         crearAfd();
         // Test String toString()
-        this.afd.toFile("testTexto.dfa"); // Crea un Archivo con el automata creado
+        this.afd.toFile("testTexto"); // Crea un Archivo con el automata creado
 
-        AFD afdFile = new AFD("testTexto.dfa");
+        AFD afdFile = new AFD("testTexto");
 
         for (Iterator<Map.Entry<String, Boolean>> it = this.cadenasExpected.entrySet().iterator(); it.hasNext();) {
             Map.Entry<String, Boolean> pair = it.next();

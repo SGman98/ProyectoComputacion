@@ -1,4 +1,4 @@
-package automatas;
+package src.automatas;
 
 import java.util.ArrayList;
 
@@ -53,14 +53,10 @@ public class AFN extends Automata {
 
     @Override
     String procesarCadenaTexto(String cadena) {
-        if (!verificarAlfabeto(cadena)) {
+        if (!verificarAlfabetoSigma(cadena)) {
             System.out.println("Cadena no cumple con el alfabeto");
             return "No cumple con el alfabeto";
         }
         return this.procesarPaso(cadena, this.estadoInicial, "");
-    }
-
-    public void toFile(String nombreArchivo) {
-        super.toFile(nombreArchivo.contains(".nfa") ? nombreArchivo : "default.nfa");
     }
 }

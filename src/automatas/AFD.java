@@ -1,4 +1,4 @@
-package automatas;
+package src.automatas;
 
 import java.util.ArrayList;
 
@@ -16,7 +16,7 @@ public class AFD extends Automata {
     @Override
     public String procesarCadenaTexto(String cadena) {
         String proceso = "";
-        if (!verificarAlfabeto(cadena)) {
+        if (!verificarAlfabetoSigma(cadena)) {
             System.out.println("Cadena no cumple con el alfabeto");
             return "No cumple con el alfabeto";
         }
@@ -42,9 +42,5 @@ public class AFD extends Automata {
         }
         proceso += "(" + estadoActual + ",$)>>rejected";
         return proceso;
-    }
-
-    public void toFile(String nombreArchivo) {
-        super.toFile(nombreArchivo.contains(".dfa") ? nombreArchivo : "default.dfa");
     }
 }
