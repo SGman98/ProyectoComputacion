@@ -34,8 +34,85 @@ Clase general con la mayoria de los Atributos y Metodos necesarios
         - La segunda parte se vuelve a dividir haciendo uso del carácter ";" creando un **ArrayList** con cada parte creada en este caso quedaría [q1:B, q3:A] donde el primero representa que la transicion llega a `q1` y la `B` se usa en la pila, y el segundo representa que la transicion llega a `q3` y la `A` se usa en la pila
     - `createOutFile(nombreArchivo)` Haciendo uso del **nombreArchivo** crea un archivo vacio y lo retorna, este metodo se encarga de revisar si el archivo existe, en caso contrario crea un archivo con el nombre por defecto **default** y el numero correspondiente para evitar usar el mismo nombre
     - `toFile(nombreArchivo)` Llama a **createOutFile** y escribe en el archivo creado el contenido de **toString()**
-    - `verificarAlfabetoSigma(cadena)` Como su nombre lo indica revisa si la cadena dada cumple con el alfabeto aceptado por el automata
+    - `verificarAlfabetoSigma/Gamma(cadena)` Como su nombre lo indica revisa si la cinta/pila/cadena dada cumple con el alfabeto aceptado por el automata
 
 # Formato de archivo
 
-    - Toca escribir implementacion
+- **Extension**
+
+    Dependiendo del tipo de automata toca poner la extension en la primera linea del archivo haciendo uso del punto. Ej:
+
+        .dfa
+- **Secciones**
+    
+    Las secciones se marcan usando el simbolo numeral "#" antes del nombre. Las siguientes son las secciones aceptadas y su forma de uso. Si estan con un "/" es que se puede usar o uno o el otro
+
+```markdown
+
+<!-- Alfabeto Sigma -->
+#alphabet / #inputAlphabet
+A-F
+a-z
+ñ
+Ñ
+...
+0-9
+
+<!-- Alfabeto Gamma -->
+#tapeAlphabet / #stackAlphabet
+A-F
+a-z
+ñ
+Ñ
+...
+0-9
+
+<!-- Todos los estados del automata -->
+#states
+q0
+q1
+q2
+...
+qn
+otro_estado
+state_name
+
+<!-- Se indica el estado inicial -->
+#initial
+state_i
+```
+
+Dependiendo del tipo de automata toca hacer uso de uno de los siguientes formatos para lar transiciones
+
+``` markdown
+<!-- Autómata Finito Determinista (AFD) -->
+#transitions
+q0:a~q1
+q1:b~q2
+...
+qn:c~qk
+<!-- Autómata Finito con Pila Determinista (AFPD) -->
+#transitions
+q0:a:A~q1:$
+q1:$:B~q2:A
+<!-- Autómata Finito con Pila No Determinista (AFPN) -->
+#transitions
+q0:a:A~q1:$q2:D;q3:$
+q1:$:B~q2:A;q5:$
+<!-- Autómata Finito con 2 Pilas (AF2P) -->
+#transitions
+q0:a:A:B~q1:$:C;q2:D:B;q3:$:$
+q1:$:B:$~q2:A:B;q5:$:S
+<!-- Máquina de Turing – Modelo Estándar (MT) -->
+#transitions
+q0:!~q1:A:>
+q1:a~q2:!:<
+<!-- Máquina de Turing Modelo con una Cinta dividida en Pistas (MTP) -->
+#transitions
+q0:!:A~q1:A:!:<
+q1:a:b~q2:!:!:-
+<!-- Máquina de Turing Modelo con Múltiples Cintas (MTMC) -->
+#transitions
+q0:!:A~q1:A;>:!;<
+q1:a:b~q2:!;<:!;-
+```
