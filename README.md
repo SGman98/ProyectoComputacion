@@ -13,7 +13,7 @@ Clase general con la mayoria de los Atributos y Metodos necesarios
     - **`constructor`** `(alfabeto, estados, estadoInicial, estadosAceptacion, transiciones)` inicializa los atributos
     - **`constructor`** `(nombreArchivo)` Carga la informacion del automata a partir de un archivo
         
-        Busca el archivo y carga cada atributo a partir de la lectura por secciones las cuales estan representadas por un "#" -> ("#Seccion"). Para ver mas informacion ver en **Formato de archivo**
+        Busca el archivo y carga cada atributo a partir de la lectura por secciones las cuales estan representadas por un "#" -> ("#Seccion"). Para ver mas informacion ver en [**Formato de archivo**](#formato-de-archivo)
 
 - **Metodos**
 
@@ -21,7 +21,7 @@ Clase general con la mayoria de los Atributos y Metodos necesarios
     - `procesarCadena(cadena)` Retorna verdadero o falso dependiendo de el resultado del proceso, llamando al metodo **"procesarCadenaTexto(cadena)"**
     - `procesarCadenaConDetalles(cadena)` Hace lo mismo que el metodo **"procesarCadena"**, imprimiendo el procedimiento
     - `procesarListaCadena(listaCadenas, nombreArchivo, imprimirPantalla)` Procesa todas las cadenas en **"listaCadenas"** llamando ya sea al metodo **"procesarCadena"** o **"procesarCadenaConDetalles"** dependiendo del parametro **"imprimirPantalla"**, y las pone en un archivo usando el nombre **"nombreArchivo"**.
-    - `toString()` Traduce el automata a una String con el formato de **Formato de archivo** para poder escribirse en un archivo
+    - `toString()` Traduce el automata a una String con el formato de [**Formato de archivo**](#formato-de-archivo) para poder escribirse en un archivo
 
     Utiles
     - `procesarCadenaTexto(cadena)` Metodo abstracto para modificar en cada clase que extienda de **Automata** segun necesite el proceso
@@ -38,4 +38,4 @@ Clase general con la mayoria de los Atributos y Metodos necesarios
 
 # Formato de archivo
 
-    
+    - Toca escribir implementacion
