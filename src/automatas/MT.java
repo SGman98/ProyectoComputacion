@@ -4,12 +4,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class MT extends Automata {
-    ArrayList<String> alfabetoPila; // Lenguaje de Pila Gamma
 
     public MT(ArrayList<String> estados, String estadoInicial, ArrayList<String> estadosAceptacion,
-            ArrayList<String> alfabeto, ArrayList<String> alfabetoPila, ArrayList<String> transiciones) {
-        super(alfabeto, estados, estadoInicial, estadosAceptacion, transiciones);
-        this.alfabetoPila = alfabetoPila;
+            ArrayList<String> alfabetoEntrada, ArrayList<String> alfabetoCinta, ArrayList<String> transiciones) {
+        super(alfabetoEntrada, estados, estadoInicial, estadosAceptacion, transiciones);
+        this.alfabetoPila = alfabetoCinta;
         this.extension = ".mt";
     }
 
@@ -19,19 +18,17 @@ public class MT extends Automata {
 
     @Override
     String procesarCadenaTexto(String cadena) {
-        cadena = cadena.equals("") ? " " : cadena; // Para evitar carácteres adicionales en la impresion
+        cadena = cadena.equals("") ? "!" : cadena; // Para evitar carácteres adicionales en la impresion
         ArrayList<String> cinta = new ArrayList<String>(Arrays.asList(cadena.split("|")));
         String proceso = "";
-        if (!verificarAlfabetoSigma(cadena) && !cadena.equals(" ")) {
+        if (!verificarAlfabetoSigma(cadena)) {
             return "Cadena no cumple con el alfabeto";
         }
         String estadoActual = this.estadoInicial;
 
         int pos = 0; // Variable para saber la posicion de la cabeza de lectura
-
         // Crea la transicion teniendo en cuenta el carácter blanco tomandolo como "!"
-        String transicion = estadoActual + ":"
-                + (pos < 0 || pos >= cinta.size() || cadena.equals(" ") ? "!" : cinta.get(pos));
+        String transicion = estadoActual + ":" + (pos < 0 || pos >= cinta.size() ? "!" : cinta.get(pos));
 
         while (this.transiciones.get(transicion) != null) { // Sigue procesando mientras exista la transicion
 
@@ -61,15 +58,6 @@ public class MT extends Automata {
         proceso += this.estadosAceptacion.contains(estadoActual) ? "accepted" : "rejected";
 
         return proceso;
-    }
-
-    boolean verificarAlfabetoGamma(String cadena) { // Verifica Alfabeto Sigma
-        cadena.replaceAll("!", ""); // mantiene lor caracteres en blanco
-        String regex = "[";
-        for (String string : alfabetoPila)
-            regex = regex + string;
-        regex = regex + "]*";
-        return cadena.matches(regex);
     }
 
 }

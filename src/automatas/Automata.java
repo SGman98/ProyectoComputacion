@@ -8,14 +8,13 @@ import java.nio.file.LinkOption;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 import java.util.Scanner;
 
 // Clase abstracta con la mayoria de los atributos y metodos necesarios para todas las clases
 
 public abstract class Automata {
     ArrayList<String> alfabeto; // Lenguaje de Cinta Sigma
+    ArrayList<String> alfabetoPila; // Lenguaje de Pila Gamma
     ArrayList<String> estados;
     String estadoInicial;
     ArrayList<String> estadosAceptacion;
@@ -49,7 +48,7 @@ public abstract class Automata {
             // Al usar los test en visual studio se crea una carpeta bin,
             // por lo que esto es para diferenciar los test
             boolean inTest = Files.exists(Paths.get("bin"), LinkOption.NOFOLLOW_LINKS);
-            
+
             if (!Files.exists(Paths.get((inTest ? "bin\\" : "") + "resources\\" + nombreArchivo),
                     LinkOption.NOFOLLOW_LINKS)) {
                 System.out.println("El archivo " + nombreArchivo + " no existe. Cargando archivo por defecto: default"
@@ -61,8 +60,6 @@ public abstract class Automata {
             File myFile = new File(nombreArchivo);
             Scanner myReader = new Scanner(myFile);
             String seccion = "";
-            if (myReader.hasNextLine()) // Revisa la primera linea del archivo la cual tiene que ser la extension
-                System.out.println("La extension " + (this.extension.equals(myReader.nextLine())? "corresponde" : "no corresponde"));
             while (myReader.hasNextLine()) {
                 String data = myReader.nextLine();
                 if (data.contains("#") || data.equals(""))
@@ -86,6 +83,8 @@ public abstract class Automata {
                             this.ponerTrancisiones(data);
                             break;
                         default:
+                            if (!this.extension.equals(data))
+                                System.out.println("La extension "+data+" no corresponde");
                             break;
                     }
                 }
@@ -154,18 +153,11 @@ public abstract class Automata {
         }
         if (!this.transiciones.isEmpty()) {
             string += "#transitions\n";
-            for (Iterator<Map.Entry<String, ArrayList<String>>> it = this.transiciones.entrySet().iterator(); it
-                    .hasNext();) {
-                Map.Entry<String, ArrayList<String>> pair = it.next();
-                string += pair.getKey() + "~";
-
-                for (String string2 : pair.getValue()) {
-                    string += string2 + ";";
-                }
-
-                string = string.contains(";") ? string.replaceFirst(".$", "") + "\n" : pair.getValue().get(1) + "\n";
-            }
-            // string += "\n";
+            // Pasa el hashmap a una string la cual es de la siguiente forma
+            // {key1=[value1-1, value1-2], key2=[value2-1]}
+            // Al fomato del pdf key1~value1-1;value1-2 /n key2~value2-1
+            string += this.transiciones.toString().replaceAll("\\], ", "\n").replaceAll("=\\[", "~")
+                    .replaceAll(", ", ";").replaceAll("\\{", "").replaceAll("\\]\\}", "");
         }
 
         return string;
@@ -190,8 +182,7 @@ public abstract class Automata {
     }
 
     File createOutFile(String nombreArchivo) throws IOException {
-        // Intenta crear el archivo y revisa si el metodo fue llamado desde un JUnit
-        // Test
+        // Intenta crear el archivo y revisa si el metodo fue llamado desde JUnit Test
         boolean inTest = Files.exists(Paths.get("bin"), LinkOption.NOFOLLOW_LINKS);
         File myFile = new File((inTest ? "bin\\" : "") + "resources\\" + nombreArchivo);
 
@@ -227,14 +218,20 @@ public abstract class Automata {
     }
 
     boolean verificarAlfabetoSigma(String cadena) { // Verifica Alfabeto Sigma
+        cadena = cadena.replaceAll("!", ""); // mantiene lor caracteres en blanco
         String regex = "[";
         for (String string : this.alfabeto)
             regex = regex + string;
         regex = regex + "]*";
-        // String regex = this.alfabeto.toString().replaceAll(", ", "") + "*"; //
-        // Verifica si la cadena entregada esta
-        // conformada unicamente por caracteres en
-        // el alfabeto
+        return cadena.matches(regex);
+    }
+
+    boolean verificarAlfabetoGamma(String cadena) { // Verifica Alfabeto Sigma
+        cadena = cadena.replaceAll("!", ""); // mantiene lor caracteres en blanco
+        String regex = "[";
+        for (String string : this.alfabetoPila)
+            regex = regex + string;
+        regex = regex + "]*";
         return cadena.matches(regex);
     }
 
