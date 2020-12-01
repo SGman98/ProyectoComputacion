@@ -1,5 +1,4 @@
-package src;
-
+package Main;
 import java.util.ArrayList;
 
 import src.automatas.*;
