@@ -1,4 +1,0 @@
-aabbcc	(q0,*aabbcc,*!)->(q1,a*abbcc,X*!)->(q1,aa*bbcc,XX*!)->(q2,aa*bbcc,X*X)->(q2,aab*bcc,*XX)->(q2,aabb*cc,*!XX)->(q3,aabb*cc,*XX)->(q3,aabbc*c,X*X)->(q3,aabbcc*!,XX*!)->(q4,aabbcc*!,XX*!)>>accepted	yes
-aaabbcc	(q0,*aaabbcc,*!)->(q1,a*aabbcc,X*!)->(q1,aa*abbcc,XX*!)->(q1,aaa*bbcc,XXX*!)->(q2,aaa*bbcc,XX*X)->(q2,aaab*bcc,X*XX)->(q2,aaabb*cc,*XXX)>>rejected	no
-aabbbcc	(q0,*aabbbcc,*!)->(q1,a*abbbcc,X*!)->(q1,aa*bbbcc,XX*!)->(q2,aa*bbbcc,X*X)->(q2,aab*bbcc,*XX)->(q2,aabb*bcc,*!XX)>>rejected	no
-aabbccc	(q0,*aabbccc,*!)->(q1,a*abbccc,X*!)->(q1,aa*bbccc,XX*!)->(q2,aa*bbccc,X*X)->(q2,aab*bccc,*XX)->(q2,aabb*ccc,*!XX)->(q3,aabb*ccc,*XX)->(q3,aabbc*cc,X*X)->(q3,aabbcc*c,XX*!)>>rejected	no
