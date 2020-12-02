@@ -18,6 +18,10 @@ a
 b
 c
 
+#tapeAlphabet
+A
+B
+C
 
 #transitions
 q0:a:!~q1:a:A:>

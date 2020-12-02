@@ -37,6 +37,9 @@ public class MT extends Automata {
                     + cinta.toString().replaceAll(", ", "").substring(pos + 1, cinta.size() + 1) + "->";
             estadoActual = this.transiciones.get(transicion).get(0).split(":")[0];
 
+            if (!verificarAlfabetoGamma(this.transiciones.get(transicion).get(0).split(":")[1]) && !verificarAlfabetoSigma(this.transiciones.get(transicion).get(0).split(":")[1])) {
+                return "Cinta no cumple con el alfabeto";
+            }
             // Mira si hay cambio en el carácter de la cinta si hay cambio lo actualiza
             // si no entonces no hace nada
             if (!transicion.split(":")[1].equals(this.transiciones.get(transicion).get(0).split(":")[1])) {

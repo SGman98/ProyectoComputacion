@@ -1,9 +1,4 @@
 .mt
-#alphabet
-a
-b
-c
-
 #states
 q0
 q1
@@ -17,6 +12,16 @@ q0
 
 #accepting
 q5
+
+#inputAlphabet
+a
+b
+c
+
+#tapeAlphabet
+X
+Y
+Z
 
 #transitions
 q0:Y~q4:Y:>

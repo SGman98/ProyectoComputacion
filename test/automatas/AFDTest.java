@@ -13,14 +13,14 @@ import src.automatas.*;
 import static org.junit.Assert.assertEquals;
 
 
-public class ADFTest {
+public class AFDTest {
     AFD afd;
     HashMap<String, Boolean> cadenasExpected;
 
     public void crearAfd() {
         // Test AFD (ab U ba)*
         // Creacion del automata basico para pruebas
-        ArrayList<String> alfabeto = new ArrayList<>(Arrays.asList("a", "b", "c"));
+        ArrayList<String> alfabeto = new ArrayList<>(Arrays.asList("a", "b"));
         ArrayList<String> estados = new ArrayList<>(Arrays.asList("q0", "q1", "q2"));
         String estadoInicial = "q0";
         ArrayList<String> estadosAceptacion = new ArrayList<>(Arrays.asList("q0"));

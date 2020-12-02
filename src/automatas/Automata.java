@@ -62,13 +62,18 @@ public abstract class Automata {
             String seccion = "";
             while (myReader.hasNextLine()) {
                 String data = myReader.nextLine();
-                if (data.contains("#") || data.equals(""))
+                if (data.contains("#") || data.equals("")) {
                     seccion = data;
-                else {
+                    if (seccion.equals("#tapeAlphabet"))
+                        this.alfabetoPila = new ArrayList<>();
+                } else {
                     switch (seccion) {
                         case "#alphabet":
                         case "#inputAlphabet":
                             this.alfabeto.add(data);
+                            break;
+                        case "#tapeAlphabet":
+                            this.alfabetoPila.add(data);
                             break;
                         case "#states":
                             this.estados.add(data);
@@ -84,7 +89,7 @@ public abstract class Automata {
                             break;
                         default:
                             if (!this.extension.equals(data))
-                                System.out.println("La extension "+data+" no corresponde");
+                                System.out.println("La extension " + data + " no corresponde");
                             break;
                     }
                 }
@@ -126,7 +131,7 @@ public abstract class Automata {
 
     public String toString() { // Crea Un string con la forma de entrada del PDF
         String string = this.extension + "\n";
-        if (!this.alfabeto.isEmpty()) {
+        if (!this.alfabeto.isEmpty() && this.alfabetoPila == null) {
             string += "#alphabet\n";
             for (String s : this.alfabeto) {
                 string += s + "\n";
@@ -147,6 +152,20 @@ public abstract class Automata {
         if (!this.estadosAceptacion.isEmpty()) {
             string += "#accepting\n";
             for (String s : this.estadosAceptacion) {
+                string += s + "\n";
+            }
+            string += "\n";
+        }
+        if (!this.alfabeto.isEmpty() && this.alfabetoPila != null) {
+            string += "#inputAlphabet\n";
+            for (String s : this.alfabeto) {
+                string += s + "\n";
+            }
+            string += "\n";
+        }
+        if (this.alfabetoPila != null && !this.alfabetoPila.isEmpty()) {
+            string += "#tapeAlphabet\n";
+            for (String s : this.alfabetoPila) {
                 string += s + "\n";
             }
             string += "\n";
@@ -218,7 +237,7 @@ public abstract class Automata {
     }
 
     boolean verificarAlfabetoSigma(String cadena) { // Verifica Alfabeto Sigma
-        cadena = cadena.replaceAll("!", ""); // mantiene lor caracteres en blanco
+        cadena = cadena.replaceAll("!", ""); // ignora los caracteres en blanco
         String regex = "[";
         for (String string : this.alfabeto)
             regex = regex + string;
@@ -227,7 +246,7 @@ public abstract class Automata {
     }
 
     boolean verificarAlfabetoGamma(String cadena) { // Verifica Alfabeto Sigma
-        cadena = cadena.replaceAll("!", ""); // mantiene lor caracteres en blanco
+        cadena = cadena.replaceAll("!", ""); // ignora los caracteres en blanco
         String regex = "[";
         for (String string : this.alfabetoPila)
             regex = regex + string;
