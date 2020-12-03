@@ -7,17 +7,12 @@ public class Main {
     public static void main(String[] args) {
         ArrayList<String> cadenas = new ArrayList<>();
 
-        MTN automata = new MTN("default.ttm");
+        AFPD automata = new AFPD("default.pda");
 
-        cadenas.add("");
-        cadenas.add("a");
-        cadenas.add("aaaa");
+        cadenas.add("abb");
         cadenas.add("aabb");
-        cadenas.add("aaabbb");
         cadenas.add("aaabb");
-        cadenas.add("aaab");
-        cadenas.add("aabbb");
-        cadenas.add("aaabc");
+        cadenas.add("aaabbbbbb");
 
         for (String string : cadenas) {
             automata.procesarCadenaConDetalles(string);

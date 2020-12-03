@@ -17,15 +17,15 @@ public class AFPDTest {
     AFPD afpd;
     HashMap<String, Boolean> cadenasExpected;
 
-    public void crearafpd() {
-        // Test afpd (ab U ba)*
+    public void crearAFPD() {
+        // Test afpd a^n b^2n
         // Creacion del automata basico para pruebas
         ArrayList<String> alfabetoEntrada = new ArrayList<>(Arrays.asList("a", "b"));
         ArrayList<String> alfabetoPila = new ArrayList<>(Arrays.asList("$", "A"));
         ArrayList<String> estados = new ArrayList<>(Arrays.asList("q0", "q1", "q2"));
         String estadoInicial = "q0";
         ArrayList<String> estadosAceptacion = new ArrayList<>(Arrays.asList("q0", "q2"));
-        ArrayList<String> delta = new ArrayList<String>(Arrays.asList("q0:a:$~q1:A", "q0:b:A~q2:$", "q1:a:$~q0:$", "q2:b:A~q2:$"));
+        ArrayList<String> delta = new ArrayList<String>(Arrays.asList("q0:a:$~q1:A", "q0:b:A~q2:$", "q1:$:$~q0:A", "q2:b:A~q2:$"));
         afpd = new AFPD(estados, estadoInicial, estadosAceptacion, alfabetoEntrada, alfabetoPila, delta);
 
         // Todas las cadenas y su resultado esperado parael automata basico de pruebas
@@ -39,7 +39,7 @@ public class AFPDTest {
     @Test
     public void procesarCadenaCodigo() {
         // Test Constructor(alfabeto, estados, estadoInicial, estadosAceptacion,delta)
-        crearafpd();
+        crearAFPD();
         // Test Booleano procesarCadena(cadena)
         for (Map.Entry<String, Boolean> pair : this.cadenasExpected.entrySet()) {
             assertEquals(pair.getValue(), this.afpd.procesarCadena(pair.getKey()));
@@ -60,7 +60,7 @@ public class AFPDTest {
     @Test
     public void procesarCadenaConDetalles() {
         // Test Booleano procesarCadenaConDetalles(cadena)
-        crearafpd();
+        crearAFPD();
         for (Map.Entry<String, Boolean> pair : this.cadenasExpected.entrySet()) {
             assertEquals(pair.getValue(), this.afpd.procesarCadena(pair.getKey()));
         }
