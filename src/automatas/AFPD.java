@@ -42,15 +42,11 @@ public class AFPD extends Automata {
                         this.transiciones.get(transicion).get(0).split(":")[1]);
 
                 estadoActual = this.transiciones.get(transicion).get(0).split(":")[0];
-                
+
                 //si hay una trasicion tipo q:$ no modifica la cadena
                 if (!transicion.split(":")[1].equals("$")) {
                     cadena = cadena.substring(1);
                 }
-
-                transicion = encontrarTransicion(estadoActual,
-                        (!cadena.isEmpty() ? String.valueOf(cadena.charAt(0)) : " "));
-
             } else {
                 return "No cumple con el alfabeto Gamma";
             }
@@ -83,16 +79,14 @@ public class AFPD extends Automata {
     }
 
     String encontrarTransicion(String estadoActual, String cabezaCinta) {
-        //intenta encontrar llave con la forma estadoActia:$:alfabetopila
+        //intenta encontrar llave con la forma estadoActual:$:alfabetoPila
         //ej q0:$:A
         for (String s : this.alfabetoPila) {
             if (this.transiciones.get(estadoActual + ":$:" + s) != null) {
                 return (estadoActual + ":$:" + s);
             }
-        }
-        //intenta encontrar llave con la forma estadoActia:cabezaCinta:alfabetoPila
-        //ej q0:b:A
-        for (String s : this.alfabetoPila) {
+            //intenta encontrar llave con la forma estadoActual:cabezaCinta:alfabetoPila
+            //ej q0:b:A
             if (this.transiciones.get(estadoActual + ":" + cabezaCinta + ":" + s) != null) {
                 return (estadoActual + ":" + cabezaCinta + ":" + s);
             }
@@ -101,6 +95,7 @@ public class AFPD extends Automata {
     }
 
     String mostrarPila() {
+        //recorre la pila y la convierte 
         String out = "";
         for (String s : this.stack) {
             out += s;
