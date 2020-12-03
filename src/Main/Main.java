@@ -7,13 +7,17 @@ public class Main {
     public static void main(String[] args) {
         ArrayList<String> cadenas = new ArrayList<>();
 
-        MTP automata = new MTP("default.ttm");
+        MTN automata = new MTN("default.ttm");
 
-        cadenas.add("aabbcc");
-        cadenas.add("aaabbbccc");
-        cadenas.add("aaabbcc");
-        cadenas.add("aabbbcc");
-        cadenas.add("aabbccc");
+        cadenas.add("");
+        cadenas.add("a");
+        cadenas.add("aaaa");
+        cadenas.add("aabb");
+        cadenas.add("aaabbb");
+        cadenas.add("aaabb");
+        cadenas.add("aaab");
+        cadenas.add("aabbb");
+        cadenas.add("aaabc");
 
         for (String string : cadenas) {
             automata.procesarCadenaConDetalles(string);
