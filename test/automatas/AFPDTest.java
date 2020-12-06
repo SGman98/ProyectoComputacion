@@ -1,9 +1,8 @@
-package automatas;
+package test.automatas;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import org.junit.*;
@@ -25,7 +24,8 @@ public class AFPDTest {
         ArrayList<String> estados = new ArrayList<>(Arrays.asList("q0", "q1", "q2"));
         String estadoInicial = "q0";
         ArrayList<String> estadosAceptacion = new ArrayList<>(Arrays.asList("q0", "q2"));
-        ArrayList<String> delta = new ArrayList<String>(Arrays.asList("q0:a:$~q1:A", "q0:b:A~q2:$", "q1:$:$~q0:A", "q2:b:A~q2:$"));
+        ArrayList<String> delta = new ArrayList<String>(
+                Arrays.asList("q0:a:$~q1:A", "q0:b:A~q2:$", "q1:$:$~q0:A", "q2:b:A~q2:$"));
         afpd = new AFPD(estados, estadoInicial, estadosAceptacion, alfabetoEntrada, alfabetoPila, delta);
 
         // Todas las cadenas y su resultado esperado parael automata basico de pruebas
@@ -49,7 +49,7 @@ public class AFPDTest {
     @Test
     public void procesarCadenaArchivo() {
         // Test Constructor(nombreArchivo)
-        this.afpd = new AFPD("default.pda");
+        this.afpd = new AFPD("default.dpda");
         // Test Booleano procesarCadena(cadena)
         assertEquals(true, this.afpd.procesarCadena("abb")); // Cadena aceptada
         assertEquals(false, this.afpd.procesarCadena("aaabb")); // Cadena no aceptada

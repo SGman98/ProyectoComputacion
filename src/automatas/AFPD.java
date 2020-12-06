@@ -11,11 +11,11 @@ public class AFPD extends Automata {
             ArrayList<String> alfabetoEntrada, ArrayList<String> alfabetopila, ArrayList<String> transiciones) {
         super(alfabetoEntrada, estados, estadoInicial, estadosAceptacion, transiciones);
         this.alfabetoPila = alfabetopila;
-        this.extension = ".pda";
+        this.extension = ".dpda";
     }
 
     public AFPD(String nombreArchivo) {
-        super(nombreArchivo.contains(".pda") ? nombreArchivo : "default.pda");
+        super(nombreArchivo.contains(".dpda") ? nombreArchivo : "default.dpda");
     }
 
     @Override
@@ -30,7 +30,8 @@ public class AFPD extends Automata {
         String estadoActual = this.estadoInicial;
 
         while (encontrarTransicion(estadoActual,
-                (!cadena.isEmpty() ? String.valueOf(cadena.charAt(0)) : " ")) != null) { // Mientras la transicion exista
+                (!cadena.isEmpty() ? String.valueOf(cadena.charAt(0)) : " ")) != null) { // Mientras la transicion
+                                                                                         // exista
             if (verificarAlfabetoGamma(mostrarPila())) {
 
                 proceso += "(" + estadoActual + "," + cadena + "," + mostrarPila() + ")->";
@@ -43,7 +44,7 @@ public class AFPD extends Automata {
 
                 estadoActual = this.transiciones.get(transicion).get(0).split(":")[0];
 
-                //si hay una trasicion tipo q:$ no modifica la cadena
+                // si hay una trasicion tipo q:$ no modifica la cadena
                 if (!transicion.split(":")[1].equals("$")) {
                     cadena = cadena.substring(1);
                 }
@@ -56,13 +57,14 @@ public class AFPD extends Automata {
         proceso += "(" + estadoActual + "," + (cadena.isEmpty() ? "$" : cadena) + ","
                 + (this.stack.peek().equals("$") ? "$" : mostrarPila()) + ")>>";
         // Mira si termino en un estado de aceptacion
-        return proceso + (this.estadosAceptacion.contains(estadoActual)
-                && cadena.isEmpty()
-                && this.stack.peek().equals("$") ? "accepted" : "rejected");
+        return proceso
+                + (this.estadosAceptacion.contains(estadoActual) && cadena.isEmpty() && this.stack.peek().equals("$")
+                        ? "accepted"
+                        : "rejected");
 
     }
 
-    void modificarPila(Stack s, String operecion, String parametro) {
+    void modificarPila(Stack<String> s, String operecion, String parametro) {
         if (operecion.equals("$")) {
             if (!parametro.equals("$")) {
                 s.push(parametro); // Añade
@@ -79,14 +81,14 @@ public class AFPD extends Automata {
     }
 
     String encontrarTransicion(String estadoActual, String cabezaCinta) {
-        //intenta encontrar llave con la forma estadoActual:$:alfabetoPila
-        //ej q0:$:A
+        // intenta encontrar llave con la forma estadoActual:$:alfabetoPila
+        // ej q0:$:A
         for (String s : this.alfabetoPila) {
             if (this.transiciones.get(estadoActual + ":$:" + s) != null) {
                 return (estadoActual + ":$:" + s);
             }
-            //intenta encontrar llave con la forma estadoActual:cabezaCinta:alfabetoPila
-            //ej q0:b:A
+            // intenta encontrar llave con la forma estadoActual:cabezaCinta:alfabetoPila
+            // ej q0:b:A
             if (this.transiciones.get(estadoActual + ":" + cabezaCinta + ":" + s) != null) {
                 return (estadoActual + ":" + cabezaCinta + ":" + s);
             }
@@ -95,7 +97,7 @@ public class AFPD extends Automata {
     }
 
     String mostrarPila() {
-        //recorre la pila y la convierte 
+        // recorre la pila y la convierte
         String out = "";
         for (String s : this.stack) {
             out += s;
