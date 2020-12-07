@@ -10,78 +10,84 @@ import java.util.Stack;
 
 public class AF2P extends Automata {
 
-
     public AF2P(ArrayList<String> estados, String estadoInicial, ArrayList<String> estadosAceptacion,
-            ArrayList<String> alfabetoEntrada, ArrayList<String> alfabetopila, ArrayList<String> transiciones) {
+                ArrayList<String> alfabetoEntrada, ArrayList<String> alfabetopila, ArrayList<String> transiciones) {
         super(alfabetoEntrada, estados, estadoInicial, estadosAceptacion, transiciones);
         this.alfabetoPila = alfabetopila;
         this.extension =  ".msm";
     }
-
-    public AF2P(String nombreArchivo) {
+    public AF2P (String nombreArchivo) {
         super(nombreArchivo.contains(".msm") ? nombreArchivo : "default.msm");}
 
-    
 
-    public String procesar(String cadena,String estadoActual, String proceso, Stack pila1, Stack pila2){
-        //recibe el string del proceso, el estado y las pilas
-       // if (!cadena.isEmpty()){
-        String aux = "";
-            if (!verificarAlfabetoSigma(cadena)) {
-                System.out.println("Cadena no cumple con el alfabeto");
 
-            }           //verificó si la cadena está vacia y si pertenece al alfabeto
-            else {
-
-                ArrayList<String> opciones = encontrarOpciones(estadoActual,!cadena.isEmpty() ? String.valueOf(cadena.charAt(0)) : " ");
-                while (!proceso.contains("accepted") && opciones.size()>0){
-                    // tiene que buscar el primer objeto de la lista y seguir
-                    modificarPila(pila1, opciones.get(0).split(":")[2],
-                            this.transiciones.get(opciones.get(0)).get(0).split(":")[1]);
-                    //encuentra y realiza las operaciones para la pila 1
-                    modificarPila(pila1, opciones.get(0).split(":")[3],
-                            this.transiciones.get(opciones.get(0)).get(0).split(":")[2]);
-                    //realiza las operaciones para la pila 2
-
-                    //recursividad
-                    String procesoRec =procesar(cadena.substring(1),
-                            this.transiciones.get(opciones.get(0)).get(0).split(":")[0],
-                    proceso + "("+ estadoActual + "," + cadena + "," + pila1.peek() + ","
-                    + pila2.peek() + ")->", pila1, pila2);
-
-                    opciones.remove(0);
-                    //debe eliminar el primer elemento de la lista para que luego no se repita
-
+    public ArrayList procesar(String cadena, String estadoActual, ArrayList<String> opciones,
+                              ArrayList<String> proceso, Stack stack1, Stack stack2){
+        proceso.add("(" + estadoActual + "," + cadena + ","+ stack1.peek()+","+ stack2.peek()+")->");
+        for(String s : opciones){
+            if (this.transiciones.get(s) != null) {
+                modificarPila(stack1, s.split(":")[2],
+                        this.transiciones.get(s).get(0).split(":")[1]);
+                //encuentra y realiza las operaciones para la pila 1
+                modificarPila(stack2, s.split(":")[3],
+                        this.transiciones.get(s).get(0).split(":")[2]);
+                if (!cadena.substring(1).isEmpty()) {
+                    procesar(cadena.substring(1), this.transiciones.get(s).get(0).split(":")[0],
+                            encontrarOpciones(this.transiciones.get(s).get(0).split(":")[0], !cadena.isEmpty() ? String.valueOf(cadena.charAt(1)) : " "),
+                            proceso, stack1, stack2);
                 }
 
             }
-        if (this.estadosAceptacion.contains(estadoActual) && pila1.peek()=="$" && pila1.size()==1
-                && pila2.peek()=="$" && pila2.size()==1) { // Mira si termino en un estado de aceptacion
-            proceso += "(" + estadoActual + ",$)>>accepted";
-            return "true";
+
         }
-            proceso += "(" + estadoActual + ",$)>>rejected";
-        return "false";
-        
+        if (this.estadosAceptacion.contains(estadoActual) && stack1.peek() == "$" && stack1.size() == 1
+                && stack2.peek() == "$" && stack2.size() == 1&& cadena.substring(1).isEmpty()) {
+            // Mira si termino en un estado de aceptacion
+            proceso.add("(" + estadoActual + "," + stack1.peek()+ ","+ stack2.peek() +")>>");
+            proceso.add("accepted");
+
+        }
+        else if(this.estadosAceptacion.contains(estadoActual) && stack1.peek() != "$"
+                && stack2.peek() != "$"  && cadena.substring(1).isEmpty()){
+            proceso.add("(" + estadoActual + "," + stack1.peek()+ ","+ stack2.peek() +")>>");
+            proceso.add("rejected");
+        }else if(!proceso.contains("accepted") & !proceso.contains("rejected") &&
+                !cadena.substring(1).isEmpty()){
+            proceso.add("aborted");
+        }
+
+        return proceso;
+    }
+    public String verCadenas(ArrayList<String> array){
+        String str = "";
+        for(String s: array){
+            //System.out.print(s);
+            str += s;
+        }
+        return str;
+
     }
     public void modificarPila(Stack pila, String operacion, String parametro){
-            if (operacion.equals("$")) {
+        if (operacion.equals("$")) {
+            if (!parametro.equals("$")) {
+                for(int i = 0; i< parametro.length(); i++) {
+                    pila.push(parametro.charAt(i));
+                }// Añade
+
+            }
+        } else {
+            if (!pila.peek().equals("$")) {
+                pila.pop(); // Elimina
                 if (!parametro.equals("$")) {
-                    pila.push(parametro); // Añade
-                }
-            } else {
-                if (!pila.peek().equals("$")) {
-                    pila.pop(); // Elimina
-                    if (!parametro.equals("$")) {
-                        pila.push(parametro); // Remplaza
-                    }
+                    for(int i = 0; i< parametro.length(); i++) {
+                        pila.push(parametro.charAt(i));
+                    } // Remplaza
                 }
             }
-
-
+        }
     }
     int computarTodosLosProcesamientos(String cadena, String nombreArchivo){
-    return 0;
+        return 0;
 
     }
 
@@ -101,19 +107,22 @@ public class AF2P extends Automata {
             }
         }
         return opciones;
-    
     }
 
 
 
     @Override
     String procesarCadenaTexto(String cadena) {
+        ArrayList<String> af = new ArrayList<>();
+        af.add(" ");
         Stack<String> pila1 = new Stack<>();
-        pila1.push("$");
-        Stack <String >pila2 = new Stack<>();
-        pila2.push("$");
-        
-        return procesar(cadena, this.estadoInicial," ", pila1, pila2 );
+        Stack<String> pila2 = new Stack<>();
+        pila1.add("$");
+        pila2.add("$");
+        String ad = verCadenas(procesar(cadena,this.estadoInicial,
+                encontrarOpciones(this.estadoInicial,!cadena.isEmpty() ? String.valueOf(cadena.charAt(0)) : " " ),
+                af, pila1, pila2));
 
+        return ad;
     }
 }
