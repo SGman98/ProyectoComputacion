@@ -16,11 +16,17 @@ public class MTN extends Automata {
         super(nombreArchivo.contains(".ntm") ? nombreArchivo : "default.ntm");
     }
 
+    public MTN(String nombreArchivo, Boolean b) {
+        super(nombreArchivo.contains(".ntm") ? nombreArchivo : "default.ntm", b);
+    }
+
     String procesarPaso(ArrayList<String> cinta, String estadoActual, String proceso, int pos) {
         // System.out.println(cinta+"---"+estadoActual+"---"+pos+"---");
         if (pos >= 10) // Profundidad de busqueda es 10 caracteres si se excede no la acepta
+        {
             return proceso + cinta.toString().replaceAll(", |\\[|\\]", "").substring(0, pos < 0 ? 0 : pos) + "(" + estadoActual
-            + ")" + cinta.toString().replaceAll(", |\\[|\\]", "").substring(pos < 0 ? 0 : pos, cinta.size()) + ">>rejected/Aborted";;
+                    + ")" + cinta.toString().replaceAll(", |\\[|\\]", "").substring(pos < 0 ? 0 : pos, cinta.size()) + ">>rejected/Aborted";
+        };
 
         String transicion = estadoActual + ":" + (pos < 0 || pos >= cinta.size() ? "!" : cinta.get(pos));
 
@@ -36,9 +42,9 @@ public class MTN extends Automata {
                     cintaTmp.add(string);
                 }
 
-                if (pos == cintaTmp.size() && !this.transiciones.get(transicion).get(prueba).split(":")[1].equals("!"))
+                if (pos == cintaTmp.size() && !this.transiciones.get(transicion).get(prueba).split(":")[1].equals("!")) {
                     cintaTmp.add(this.transiciones.get(transicion).get(prueba).split(":")[1]);
-                else if (!transicion.split(":")[1]
+                } else if (!transicion.split(":")[1]
                         .equals(this.transiciones.get(transicion).get(prueba).split(":")[1])) {
                     cintaTmp.set(pos, this.transiciones.get(transicion).get(prueba).split(":")[1]);
                 }
@@ -46,12 +52,12 @@ public class MTN extends Automata {
                 String procesoPrueba = procesarPaso(cintaTmp,
                         this.transiciones.get(transicion).get(prueba).split(":")[0],
                         proceso + cintaTmp.toString().replaceAll(", |\\[|\\]", "").substring(0, pos < 0 ? 0 : pos) + "("
-                                + estadoActual + ")"
-                                + cintaTmp.toString().replaceAll(", |\\[|\\]", "").substring(pos < 0 ? 0 : pos,
-                                        cintaTmp.size())
-                                + "->",
+                        + estadoActual + ")"
+                        + cintaTmp.toString().replaceAll(", |\\[|\\]", "").substring(pos < 0 ? 0 : pos,
+                                cintaTmp.size())
+                        + "->",
                         pos + (this.transiciones.get(transicion).get(prueba).split(":")[2].equals(">") ? 1
-                                : this.transiciones.get(transicion).get(prueba).split(":")[2].equals("<") ? -1 : 0));
+                        : this.transiciones.get(transicion).get(prueba).split(":")[2].equals("<") ? -1 : 0));
 
                 prueba++; // Aumenta el numero para la siguiente prueba
                 proceso = procesoPrueba.contains("rejected") && prueba < this.transiciones.get(transicion).size()

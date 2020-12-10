@@ -3,6 +3,7 @@ package src.automatas;
 import java.util.ArrayList;
 
 public class AFD extends Automata {
+
     public AFD(ArrayList<String> alfabeto, ArrayList<String> estados, String estadoInicial,
             ArrayList<String> estadosAceptacion, ArrayList<String> transiciones) {
         super(alfabeto, estados, estadoInicial, estadosAceptacion, transiciones);
@@ -11,6 +12,10 @@ public class AFD extends Automata {
 
     public AFD(String nombreArchivo) {
         super(nombreArchivo.contains(".dfa") ? nombreArchivo : "default.dfa");
+    }
+
+    public AFD(String nombreArchivo, Boolean b) {
+        super(nombreArchivo.contains(".dfa") ? nombreArchivo : "default.dfa", b);
     }
 
     @Override

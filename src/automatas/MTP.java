@@ -16,6 +16,10 @@ public class MTP extends Automata {
         super(nombreArchivo.contains(".ttm") ? nombreArchivo : "default.ttm");
     }
 
+    public MTP(String nombreArchivo, Boolean b) {
+        super(nombreArchivo.contains(".ttm") ? nombreArchivo : "default.ttm", b);
+    }
+
     @Override
     String procesarCadenaTexto(String cadena) {
         cadena = cadena.equals("") ? "!" : cadena; // Para evitar carácteres adicionales en la impresion
@@ -37,8 +41,9 @@ public class MTP extends Automata {
 
         for (int i = 1; i < k; i++) {
             cinta.add(new ArrayList<String>());
-            for (int j = 0; j < cinta.get(0).size(); j++)
+            for (int j = 0; j < cinta.get(0).size(); j++) {
                 cinta.get(i).add("!");
+            }
             transicion += ":" + cinta.get(i).get(0);
         }
 
@@ -47,15 +52,19 @@ public class MTP extends Automata {
 
             for (int i = 0; i < cinta.get(0).size(); i++) {
                 proceso += "(";
-                if (i == cabezaLectura)
+                if (i == cabezaLectura) {
                     proceso += estadoActual + ")(";
+                }
 
-                for (int j = 0; j < k; j++)
+                for (int j = 0; j < k; j++) {
                     proceso += cinta.get(j).get(i) + (j == k - 1 ? ")" : ",");
+                }
 
-                if (i == cabezaLectura)
-                    for (int j = 0; j < k; j++)
+                if (i == cabezaLectura) {
+                    for (int j = 0; j < k; j++) {
                         cinta.get(j).set(i, this.transiciones.get(transicion).get(0).split(":")[j + 1]);
+                    }
+                }
 
             }
             proceso += "->";
@@ -78,7 +87,7 @@ public class MTP extends Automata {
             proceso += (cabezaLectura < 0 ? "" : procesoTmp.substring(0, cabezaLectura))
                     + (cabezaLectura < 0 ? "*!" : "*")
                     + (cabezaLectura >= procesoTmp.length() ? "!"
-                            : procesoTmp.substring(cabezaLectura < 0 ? 0 : cabezaLectura, procesoTmp.length()))
+                    : procesoTmp.substring(cabezaLectura < 0 ? 0 : cabezaLectura, procesoTmp.length()))
                     + (i == k - 1 ? ")>>" : ",");
         }
 

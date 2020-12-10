@@ -16,12 +16,15 @@ public class AFPN extends Automata {
         super(nombreArchivo.contains(".pda") ? nombreArchivo : "default.pda");
     }
 
+    public AFPN(String nombreArchivo, Boolean b) {
+        super(nombreArchivo.contains(".pda") ? nombreArchivo : "default.pda", b);
+    }
+
     public String procesarPaso(String cadena, String estadoActual, String proceso, Stack<String> pila, int i) {
 
         String transicion = estadoActual + ":" + encontrarTransicion(i, cadena, pila);
 
         // System.out.println(i + "-----" + proceso + transicion);
-
         if (!cadena.isEmpty()) {
             if (this.transiciones.get(transicion) != null) {
 
@@ -36,13 +39,14 @@ public class AFPN extends Automata {
                         procesoPrueba = procesarPaso(cadena.substring(1),
                                 this.transiciones.get(transicion).get(prueba).split(":")[0],
                                 proceso + "(" + estadoActual + "," + cadena + ","
-                                        + (pila.isEmpty() ? "$" : pila.toString().replaceAll(", |\\[|\\]", "")) + ")->",
+                                + (pila.isEmpty() ? "$" : pila.toString().replaceAll(", |\\[|\\]", "")) + ")->",
                                 modificarPila(pila, transicion.split(":")[2],
                                         this.transiciones.get(transicion).get(prueba).split(":")[1]),
                                 j);
 
-                        if (procesoPrueba.contains("rejected") || procesoPrueba.contains("accepted"))
+                        if (procesoPrueba.contains("rejected") || procesoPrueba.contains("accepted")) {
                             break;
+                        }
 
                     }
                     prueba++; // Aumenta el numero para la siguiente prueba
@@ -55,7 +59,7 @@ public class AFPN extends Automata {
         }
 
         if (this.estadosAceptacion.contains(estadoActual) && pila.isEmpty()) { // Mira si termino en un estado de
-                                                                               // aceptacion
+            // aceptacion
             proceso += "(" + estadoActual + ",$,$)>>accepted";
             return proceso;
         }
@@ -69,12 +73,14 @@ public class AFPN extends Automata {
             pilaProceso.add(string);
         }
         if (topePila.equals("$")) {
-            if (!resultadoTransicion.equals("$"))
+            if (!resultadoTransicion.equals("$")) {
                 pilaProceso.push(resultadoTransicion); // Añade
+            }
         } else {
             pilaProceso.pop(); // Elimina
-            if (!resultadoTransicion.equals("$"))
+            if (!resultadoTransicion.equals("$")) {
                 pilaProceso.push(resultadoTransicion); // Remplaza
+            }
         }
         return pilaProceso;
     }

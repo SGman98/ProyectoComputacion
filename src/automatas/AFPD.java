@@ -17,6 +17,9 @@ public class AFPD extends Automata {
     public AFPD(String nombreArchivo) {
         super(nombreArchivo.contains(".dpda") ? nombreArchivo : "default.dpda");
     }
+    public AFPD(String nombreArchivo, Boolean b) {
+        super(nombreArchivo.contains(".dpda") ? nombreArchivo : "default.dpda", b);
+    }
 
     @Override
     public String procesarCadenaTexto(String cadena) {

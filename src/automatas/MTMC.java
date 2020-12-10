@@ -16,6 +16,10 @@ public class MTMC extends Automata {
         super(nombreArchivo.contains(".mttm") ? nombreArchivo : "default.mttm");
     }
 
+    public MTMC(String nombreArchivo, Boolean b) {
+        super(nombreArchivo.contains(".mttm") ? nombreArchivo : "default.mttm", b);
+    }
+
     @Override
     String procesarCadenaTexto(String cadena) {
         cadena = cadena.equals("") ? "!" : cadena; // Para evitar carácteres adicionales en la impresion
@@ -52,25 +56,27 @@ public class MTMC extends Automata {
                 String procesoTmp = cinta.get(i).toString().replaceAll(", |\\[|\\]", "");
 
                 if (!(cabezaLectura.get(i) < 0)) {
-                    if (cabezaLectura.get(i) >= cinta.get(i).size())
+                    if (cabezaLectura.get(i) >= cinta.get(i).size()) {
                         cinta.get(i).add("!");
+                    }
                     cinta.get(i).set(cabezaLectura.get(i),
                             this.transiciones.get(transicion).get(0).split(":")[i * 2 + 1]);
-                    if (cinta.get(i).contains("!"))
+                    if (cinta.get(i).contains("!")) {
                         cinta.get(i).remove(cinta.get(i).size() - 1);
+                    }
                 }
 
                 proceso += (cabezaLectura.get(i) < 0 ? "" : procesoTmp.substring(0, cabezaLectura.get(i)))
                         + (cabezaLectura.get(i) < 0 ? "*!" : "*")
                         + (cabezaLectura.get(i) >= procesoTmp.length() ? "!"
-                                : procesoTmp.substring(cabezaLectura.get(i) < 0 ? 0 : cabezaLectura.get(i),
-                                        procesoTmp.length()))
+                        : procesoTmp.substring(cabezaLectura.get(i) < 0 ? 0 : cabezaLectura.get(i),
+                                procesoTmp.length()))
                         + (i == k - 1 ? ")->" : ",");
 
                 cabezaLectura.set(i,
                         cabezaLectura.get(i) + (transiciones.get(transicion).get(0).split(":")[i * 2 + 2].equals(">")
-                                ? 1
-                                : transiciones.get(transicion).get(0).split(":")[i * 2 + 2].equals("-") ? 0 : -1));
+                        ? 1
+                        : transiciones.get(transicion).get(0).split(":")[i * 2 + 2].equals("-") ? 0 : -1));
             }
             transicion = estadoActual + ":";
             for (int i = 0; i < k; i++) {
@@ -83,12 +89,12 @@ public class MTMC extends Automata {
         proceso += "(" + estadoActual + ",";
         for (int i = 0; i < k; i++) {
             String procesoTmp = cinta.get(i).toString().replaceAll(", |\\[|\\]", "");
-             proceso += (cabezaLectura.get(i) < 0 ? "" : procesoTmp.substring(0, cabezaLectura.get(i)))
-             + (cabezaLectura.get(i) < 0 ? "*!" : "*")
-             + (cabezaLectura.get(i) >= procesoTmp.length() ? "!"
-                     : procesoTmp.substring(cabezaLectura.get(i) < 0 ? 0 : cabezaLectura.get(i),
-                             procesoTmp.length()))
-             + (i == k - 1 ? ")>>" : ",");
+            proceso += (cabezaLectura.get(i) < 0 ? "" : procesoTmp.substring(0, cabezaLectura.get(i)))
+                    + (cabezaLectura.get(i) < 0 ? "*!" : "*")
+                    + (cabezaLectura.get(i) >= procesoTmp.length() ? "!"
+                    : procesoTmp.substring(cabezaLectura.get(i) < 0 ? 0 : cabezaLectura.get(i),
+                            procesoTmp.length()))
+                    + (i == k - 1 ? ")>>" : ",");
         }
 
         // Mira si termino en un estado de aceptacion

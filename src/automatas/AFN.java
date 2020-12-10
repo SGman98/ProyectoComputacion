@@ -3,6 +3,7 @@ package src.automatas;
 import java.util.ArrayList;
 
 public class AFN extends Automata {
+
     public AFN(ArrayList<String> alfabeto, ArrayList<String> estados, String estadoInicial,
             ArrayList<String> estadosAceptacion, ArrayList<String> transiciones) {
         super(alfabeto, estados, estadoInicial, estadosAceptacion, transiciones);
@@ -11,6 +12,10 @@ public class AFN extends Automata {
 
     public AFN(String nombreArchivo) {
         super(nombreArchivo.contains(".nfa") ? nombreArchivo : "default.nfa");
+    }
+
+    public AFN(String nombreArchivo, Boolean b) {
+        super(nombreArchivo.contains(".nfa") ? nombreArchivo : "default.nfa", b);
     }
 
     String procesarPaso(String cadena, String estadoActual, String proceso) {

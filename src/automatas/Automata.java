@@ -11,8 +11,8 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 // Clase abstracta con la mayoria de los atributos y metodos necesarios para todas las clases
-
 public abstract class Automata {
+
     ArrayList<String> alfabeto; // Lenguaje de Cinta Sigma
     ArrayList<String> alfabetoPila; // Lenguaje de Pila Gamma
     ArrayList<String> estados;
@@ -64,8 +64,9 @@ public abstract class Automata {
                 String data = myReader.nextLine();
                 if (data.contains("#") || data.equals("")) {
                     seccion = data;
-                    if (seccion.equals("#tapeAlphabet"))
+                    if (seccion.equals("#tapeAlphabet")) {
                         this.alfabetoPila = new ArrayList<>();
+                    }
                 } else {
                     switch (seccion) {
                         case "#alphabet":
@@ -88,8 +89,65 @@ public abstract class Automata {
                             this.ponerTrancisiones(data);
                             break;
                         default:
-                            if (!this.extension.equals(data))
+                            if (!this.extension.equals(data)) {
                                 System.out.println("La extension " + data + " no corresponde");
+                            }
+                            break;
+                    }
+                }
+            }
+            myReader.close();
+        } catch (IOException e) {
+            System.out.println("Error: " + e);
+        }
+    }
+
+    public Automata(String nombreArchivo, boolean b) {
+        // Idea: El archivo esta dividido en secciones Leer el inicio de la seccion y
+        // comenzar un bucle de lectura hasta que encuentre otra seccion
+        this.alfabeto = new ArrayList<>();
+        this.estados = new ArrayList<>();
+        this.estadosAceptacion = new ArrayList<>();
+        this.transiciones = new HashMap<>();
+
+        int index = nombreArchivo.lastIndexOf('.');
+        this.extension = "." + ((index > 0) ? nombreArchivo.substring(index + 1) : "");
+        try {
+            File myFile = new File(nombreArchivo);
+            Scanner myReader = new Scanner(myFile);
+            String seccion = "";
+            while (myReader.hasNextLine()) {
+                String data = myReader.nextLine();
+                if (data.contains("#") || data.equals("")) {
+                    seccion = data;
+                    if (seccion.equals("#tapeAlphabet")) {
+                        this.alfabetoPila = new ArrayList<>();
+                    }
+                } else {
+                    switch (seccion) {
+                        case "#alphabet":
+                        case "#inputAlphabet":
+                            this.alfabeto.add(data);
+                            break;
+                        case "#tapeAlphabet":
+                            this.alfabetoPila.add(data);
+                            break;
+                        case "#states":
+                            this.estados.add(data);
+                            break;
+                        case "#initial":
+                            this.estadoInicial = data;
+                            break;
+                        case "#accepting":
+                            this.estadosAceptacion.add(data);
+                            break;
+                        case "#transitions":
+                            this.ponerTrancisiones(data);
+                            break;
+                        default:
+                            if (!this.extension.equals(data)) {
+                                System.out.println("La extension " + data + " no corresponde");
+                            }
                             break;
                     }
                 }
@@ -183,8 +241,11 @@ public abstract class Automata {
     }
 
     // Metodos Utiles no propuestos
-
     abstract String procesarCadenaTexto(String cadena); // Procesa la cadena y devuelve el texto
+
+    public String mostrarProceso(String texto) {
+        return procesarCadenaTexto(texto);
+    }
 
     void ponerTrancisiones(String transiciones) { // Añadir las trancisiones
         String[] transicion;
@@ -194,8 +255,9 @@ public abstract class Automata {
         for (String string : transicion[1].split(";")) {
             transicionFinal.add(string);
         }
-        if (transicion[1].split(";").length == 0)
+        if (transicion[1].split(";").length == 0) {
             transicionFinal.add(transicion[1]);
+        }
         this.transiciones.put(transicion[0], new ArrayList<String>(transicionFinal));
         transicionFinal.clear();
     }
@@ -239,8 +301,9 @@ public abstract class Automata {
     boolean verificarAlfabetoSigma(String cadena) { // Verifica Alfabeto Sigma
         cadena = cadena.replaceAll("!", ""); // ignora los caracteres en blanco
         String regex = "[";
-        for (String string : this.alfabeto)
+        for (String string : this.alfabeto) {
             regex = regex + string;
+        }
         regex = regex + "]*";
         return cadena.matches(regex);
     }
@@ -248,10 +311,59 @@ public abstract class Automata {
     boolean verificarAlfabetoGamma(String cadena) { // Verifica Alfabeto Sigma
         cadena = cadena.replaceAll("!", ""); // ignora los caracteres en blanco
         String regex = "[";
-        for (String string : this.alfabetoPila)
+        for (String string : this.alfabetoPila) {
             regex = regex + string;
+        }
         regex = regex + "]*";
         return cadena.matches(regex);
+    }
+
+    public ArrayList<String> getAlfabeto() {
+        return alfabeto;
+    }
+
+    public ArrayList<String> getAlfabetoPila() {
+        return alfabetoPila;
+    }
+
+    public ArrayList<String> getEstados() {
+        return estados;
+    }
+
+    public String getEstadoInicial() {
+        return estadoInicial;
+    }
+
+    public ArrayList<String> getEstadosAceptacion() {
+        return estadosAceptacion;
+    }
+
+    public HashMap<String, ArrayList<String>> getTransiciones() {
+        return transiciones;
+    }
+
+    public void setAlfabeto(ArrayList<String> alfabeto) {
+        this.alfabeto = alfabeto;
+    }
+
+    public void setAlfabetoPila(ArrayList<String> alfabetoPila) {
+        this.alfabetoPila = alfabetoPila;
+    }
+
+    public void setEstados(ArrayList<String> estados) {
+        this.estados = estados;
+    }
+
+    public void setEstadoInicial(String estadoInicial) {
+        this.estadoInicial = estadoInicial;
+    }
+
+    public void setEstadosAceptacion(ArrayList<String> estadosAceptacion) {
+        this.estadosAceptacion = estadosAceptacion;
+    }
+
+    public void setTransiciones(HashMap<String, ArrayList<String>> transiciones) {
+        this.transiciones = transiciones;
     }
 
 }

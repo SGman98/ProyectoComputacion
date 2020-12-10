@@ -16,6 +16,10 @@ public class MT extends Automata {
         super(nombreArchivo.contains(".mt") ? nombreArchivo : "default.mt");
     }
 
+    public MT(String nombreArchivo, Boolean b) {
+        super(nombreArchivo.contains(".mt") ? nombreArchivo : "default.mt", b);
+    }
+
     @Override
     String procesarCadenaTexto(String cadena) {
         cadena = cadena.equals("") ? "!" : cadena; // Para evitar carácteres adicionales en la impresion
