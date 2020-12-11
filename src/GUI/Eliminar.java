@@ -274,7 +274,7 @@ public class Eliminar extends javax.swing.JPanel {
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
         int i = JOptionPane.showConfirmDialog(null,
-                " esta seguro que desea eliminar este automata",
+                "¿Esta seguro que desea eliminar este automata?",
                 "Elminar",
                 JOptionPane.OK_OPTION);
         if (i == JOptionPane.YES_OPTION) {

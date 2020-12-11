@@ -83,11 +83,6 @@ public class Evaluar extends javax.swing.JPanel {
 
         cbAutomata.setFont(new java.awt.Font("Leelawadee UI", 0, 11)); // NOI18N
         cbAutomata.setPreferredSize(new java.awt.Dimension(175, 30));
-        cbAutomata.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbAutomataActionPerformed(evt);
-            }
-        });
 
         jLabel7.setBackground(new java.awt.Color(255, 255, 255));
         jLabel7.setFont(new java.awt.Font("Leelawadee", 0, 18)); // NOI18N
@@ -199,13 +194,9 @@ public class Evaluar extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void cbAutomataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbAutomataActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cbAutomataActionPerformed
-
     private void btnBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarActionPerformed
         int i = JOptionPane.showConfirmDialog(null,
-                " esta seguro que desea borrar todos los campos",
+                "¿Esta seguro que desea borrar todos los campos?",
                 "Elminar",
                 JOptionPane.OK_OPTION);
         if (i == JOptionPane.YES_OPTION) {
@@ -223,7 +214,7 @@ public class Evaluar extends javax.swing.JPanel {
 
         if (automatas.isEmpty()) {
             JOptionPane.showMessageDialog(null,
-                    "No hay automatas disponibles para eliminar",
+                    "No hay automatas disponibles para evaluar",
                     "Lista de automatas vacia",
                     JOptionPane.ERROR_MESSAGE);
         } else {

@@ -172,6 +172,11 @@ public class Modificar extends javax.swing.JPanel {
 
         txtAceptacion.setFont(new java.awt.Font("Leelawadee", 0, 24)); // NOI18N
         txtAceptacion.setPreferredSize(new java.awt.Dimension(175, 30));
+        txtAceptacion.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtAceptacionKeyTyped(evt);
+            }
+        });
 
         jLabel4.setBackground(new java.awt.Color(255, 255, 255));
         jLabel4.setFont(new java.awt.Font("Leelawadee", 0, 16)); // NOI18N
@@ -200,6 +205,11 @@ public class Modificar extends javax.swing.JPanel {
 
         txtSigma.setFont(new java.awt.Font("Leelawadee", 0, 24)); // NOI18N
         txtSigma.setPreferredSize(new java.awt.Dimension(175, 30));
+        txtSigma.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtSigmaKeyTyped(evt);
+            }
+        });
 
         jLabel7.setBackground(new java.awt.Color(255, 255, 255));
         jLabel7.setFont(new java.awt.Font("Leelawadee", 0, 16)); // NOI18N
@@ -212,10 +222,20 @@ public class Modificar extends javax.swing.JPanel {
         txtTransiciones.setColumns(20);
         txtTransiciones.setRows(5);
         txtTransiciones.setWrapStyleWord(true);
+        txtTransiciones.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtTransicionesKeyTyped(evt);
+            }
+        });
         jScrollPane1.setViewportView(txtTransiciones);
 
         txtEstados.setFont(new java.awt.Font("Leelawadee", 0, 24)); // NOI18N
         txtEstados.setPreferredSize(new java.awt.Dimension(175, 30));
+        txtEstados.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtEstadosKeyTyped(evt);
+            }
+        });
 
         jlGamma.setBackground(new java.awt.Color(255, 255, 255));
         jlGamma.setFont(new java.awt.Font("Leelawadee", 0, 16)); // NOI18N
@@ -251,6 +271,11 @@ public class Modificar extends javax.swing.JPanel {
 
         txtGamma.setFont(new java.awt.Font("Leelawadee", 0, 24)); // NOI18N
         txtGamma.setPreferredSize(new java.awt.Dimension(175, 30));
+        txtGamma.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtGammaKeyTyped(evt);
+            }
+        });
 
         btnAceptar.setFont(new java.awt.Font("Leelawadee UI", 0, 11)); // NOI18N
         btnAceptar.setText("Aceptar");
@@ -265,11 +290,6 @@ public class Modificar extends javax.swing.JPanel {
         cbEstadoInicial.setForeground(new java.awt.Color(255, 255, 255));
         cbEstadoInicial.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Esperando Estados" }));
         cbEstadoInicial.setPreferredSize(new java.awt.Dimension(175, 30));
-        cbEstadoInicial.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbEstadoInicialActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -369,13 +389,13 @@ public class Modificar extends javax.swing.JPanel {
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
         int i = JOptionPane.showConfirmDialog(null,
-                " esta seguro que desea eliminar este automata",
+                "¿Esta seguro que desea eliminar este automata?",
                 "Elminar",
                 JOptionPane.OK_OPTION);
         if (i == JOptionPane.YES_OPTION) {
             if (automatas.isEmpty()) {
                 JOptionPane.showMessageDialog(null,
-                        "No hay automatas disponibles para eliminar",
+                        "No hay automatas disponibles para modificar",
                         "Lista de automatas vacia",
                         JOptionPane.ERROR_MESSAGE);
             } else {
@@ -423,9 +443,50 @@ public class Modificar extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btnAceptarActionPerformed
 
-    private void cbEstadoInicialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbEstadoInicialActionPerformed
+    private void txtEstadosKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtEstadosKeyTyped
+        char c = evt.getKeyChar();
+        if (!Character.isLetterOrDigit(c) && c != 32 && c != ',') {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtEstadosKeyTyped
 
-    }//GEN-LAST:event_cbEstadoInicialActionPerformed
+    private void txtSigmaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSigmaKeyTyped
+        char c = evt.getKeyChar();
+        if (!Character.isLetterOrDigit(c) && c != 32 && c != ',') {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtSigmaKeyTyped
+
+    private void txtGammaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtGammaKeyTyped
+        char c = evt.getKeyChar();
+        if (!Character.isLetterOrDigit(c) && c != 32 && c != ',') {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtGammaKeyTyped
+
+    private void txtAceptacionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtAceptacionKeyTyped
+        char c = evt.getKeyChar();
+        if (!Character.isLetterOrDigit(c) && c != 32 && c != ',') {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtAceptacionKeyTyped
+
+    private void txtTransicionesKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTransicionesKeyTyped
+        char c = evt.getKeyChar();
+        if (!Character.isLetterOrDigit(c)
+                && c != 32
+                && c != ','
+                && c != ':'
+                && c != '~'
+                && c != '$'
+                && c != ';'
+                && c != '<'
+                && c != '>'
+                && c != '-'
+                && c != '!') {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtTransicionesKeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

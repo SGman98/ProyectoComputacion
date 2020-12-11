@@ -206,11 +206,6 @@ public class Agregar extends javax.swing.JPanel {
                 txtEstadosFocusLost(evt);
             }
         });
-        txtEstados.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtEstadosActionPerformed(evt);
-            }
-        });
         txtEstados.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtEstadosKeyTyped(evt);
@@ -237,11 +232,6 @@ public class Agregar extends javax.swing.JPanel {
         cbInicial.setForeground(new java.awt.Color(255, 255, 255));
         cbInicial.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Esperando Estados" }));
         cbInicial.setPreferredSize(new java.awt.Dimension(175, 30));
-        cbInicial.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbInicialActionPerformed(evt);
-            }
-        });
 
         jLabel10.setBackground(new java.awt.Color(255, 255, 255));
         jLabel10.setFont(new java.awt.Font("Leelawadee", 0, 24)); // NOI18N
@@ -510,7 +500,7 @@ public class Agregar extends javax.swing.JPanel {
         }
         if (archivo.contains(".mttm")) {
             MTMC mtmc = new MTMC(archivo, true);
-            txtNombre.setText("Deafault MTMC");
+            txtNombre.setText("Default MTMC");
             txtAceptacion.setText(mtmc.getEstadoInicial());
             txtEstados.setText(mtmc.getEstados().toString().replace("[", "").replace("]", ""));
             txtGamma.setEditable(true);
@@ -526,7 +516,7 @@ public class Agregar extends javax.swing.JPanel {
         }
         if (archivo.contains(".ntm")) {
             MTN mtn = new MTN(archivo, true);
-            txtNombre.setText("Deafault MTN");
+            txtNombre.setText("Default MTN");
             txtAceptacion.setText(mtn.getEstadoInicial());
             txtEstados.setText(mtn.getEstados().toString().replace("[", "").replace("]", ""));
             txtGamma.setEditable(true);
@@ -549,10 +539,6 @@ public class Agregar extends javax.swing.JPanel {
             txtGamma.setEditable(true);
         }
     }//GEN-LAST:event_cbAutomataActionPerformed
-
-    private void cbInicialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbInicialActionPerformed
-
-    }//GEN-LAST:event_cbInicialActionPerformed
 
     private void txtEstadosFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtEstadosFocusLost
         String[] estados = txtEstados.getText().split(",");
@@ -730,14 +716,10 @@ public class Agregar extends javax.swing.JPanel {
         } else {
             JOptionPane.showMessageDialog(null,
                     "El automata ya esta agregado o los campos estan vacios",
-                    "Agregado existente",
+                    "Agregado existente o ampos vacios",
                     JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnAceptarActionPerformed
-
-    private void txtEstadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEstadosActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtEstadosActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
