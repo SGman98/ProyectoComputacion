@@ -11,16 +11,19 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.ListCellRenderer;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import javax.swing.border.MatteBorder;
@@ -31,15 +34,18 @@ import javax.swing.table.TableCellRenderer;
 
 public class Funciones {
 
-    public final Color fondoTxt = new Color(0, 0, 0, 15);
+    public final Color fondoTxt = new Color(255, 255, 255, 15);
+    public final Color aceptar = new Color(0, 255, 0, 50);
+    public final Color rechazar = new Color(255, 0, 0, 50);
     public final Color fondoTxtError = new Color(255, 0, 0, 63);
-    public final Color colorPrincipal = new Color(12, 183, 242);
+    public final Color colorPrincipal = new Color(255, 255, 255);
     public final Color azulApp = new Color(8, 83, 148);
 
     public void setStyleJTextField(JTextField tf) {
         tf.setBackground(fondoTxt);
         tf.setFont(new Font("Leelawadee", 0, 18));
-        tf.setBorder(new MatteBorder(3, 3, 3, 3, colorPrincipal));
+        tf.setBorder(new MatteBorder(1, 1, 1, 1, colorPrincipal));
+        tf.setForeground(Color.WHITE);
 
     }
 
@@ -50,14 +56,15 @@ public class Funciones {
         jta.setWrapStyleWord(true);
         jta.setOpaque(false);
         jta.setFont(new Font("Leelawadee", 0, 18));
-        jta.setBorder(new MatteBorder(3, 3, 3, 3, colorPrincipal));
+        jta.setForeground(Color.WHITE);
+        jta.setBorder(new MatteBorder(1, 1, 1, 1, colorPrincipal));
     }
 
     public void setStyleJComboBox(JComboBox box) {
-        box.setBackground(new Color(0, 0, 0, 0));
-        box.setBorder(new MatteBorder(3, 3, 3, 3, colorPrincipal));
-        box.setFont(new Font("Leelawadee", 0, 18));
-        box.setForeground(Color.BLACK);
+        box.setBackground(new Color(255, 255, 255, 0));
+        box.setBorder(new MatteBorder(1, 1, 1, 1, colorPrincipal));
+        box.setFont(new Font("Leelawadee", 0, 10));
+        box.setRenderer(new CboListCellRenderer());
 
     }
 
@@ -70,24 +77,24 @@ public class Funciones {
     public void setStyleJButon(JButton jb) {
         jb.setOpaque(false);
         int delta = 30;
-        Color sinFondo = new Color(0, 0, 0, 0);
-        Color fondoNormal = new Color(12, 183, 242, 255);
-        Color fondoPresionado = new Color(12, 183 - delta, 242, 255);
-        Color fondoClaro = new Color(12, 183 + delta, 242, 255);
+
+        Color sinFondo = new Color(3, 25, 38);
+        Color fondoNormal = new Color(255, 255, 255, 255);
+        Color fondoPresionado = new Color(255, 255 - delta, 255, 255);
+        Color fondoClaro = new Color(255, 255 + 0, 255, 255);
         jb.setVerticalAlignment(JButton.CENTER);
         jb.setHorizontalAlignment(JButton.CENTER);
         jb.setVerticalTextPosition(JButton.CENTER);
         jb.setHorizontalTextPosition(JButton.CENTER);
-        jb.setFont(new Font("Leelawadee", 1, 18));
+        jb.setFont(new Font("Leelawadee", 0, 16));
         jb.setForeground(fondoNormal);
         jb.setBackground(sinFondo);
-        jb.setBorder(new MatteBorder(4, 4, 4, 4, fondoNormal));
+
         jb.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 jb.setForeground(fondoClaro);
                 jb.setBackground(sinFondo);
-                jb.setBorder(new MatteBorder(4, 4, 4, 4, fondoClaro));
 
             }
 
@@ -95,7 +102,6 @@ public class Funciones {
             public void mousePressed(MouseEvent e) {
                 jb.setForeground(fondoPresionado);
                 jb.setBackground(sinFondo);
-                jb.setBorder(new MatteBorder(4, 4, 4, 4, fondoPresionado));
 
             }
 
@@ -103,7 +109,6 @@ public class Funciones {
             public void mouseReleased(MouseEvent e) {
                 jb.setForeground(fondoNormal);
                 jb.setBackground(sinFondo);
-                jb.setBorder(new MatteBorder(4, 4, 4, 4, fondoNormal));
 
             }
 
@@ -111,7 +116,6 @@ public class Funciones {
             public void mouseEntered(MouseEvent e) {
                 jb.setForeground(fondoClaro);
                 jb.setBackground(sinFondo);
-                jb.setBorder(new MatteBorder(4, 4, 4, 4, fondoClaro));
 
             }
 
@@ -119,7 +123,68 @@ public class Funciones {
             public void mouseExited(MouseEvent e) {
                 jb.setBackground(sinFondo);
                 jb.setForeground(fondoNormal);
-                jb.setBorder(new MatteBorder(4, 4, 4, 4, fondoNormal));
+
+            }
+        });
+
+    }
+
+    public void setStyleJButonMenu(JButton jb) {
+        jb.setOpaque(false);
+        int delta = 30;
+
+        Color sinFondo = new Color(0, 0, 0, 0);
+        Color fondoNormal = new Color(0, 0, 0);
+        Color fondoPresionado = new Color(157, 190 - delta, 187);
+        Color fondoClaro = new Color(157, 190 + delta, 187);
+        jb.setVerticalAlignment(JButton.CENTER);
+        jb.setHorizontalAlignment(JButton.CENTER);
+        jb.setVerticalTextPosition(JButton.CENTER);
+        jb.setHorizontalTextPosition(JButton.CENTER);
+        jb.setFont(new Font("Leelawadee", 1, 14));
+        jb.setBorder(new MatteBorder(2, 2, 2, 2, fondoNormal));
+        jb.setForeground(fondoNormal);
+        jb.setBackground(sinFondo);
+
+        jb.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                jb.setForeground(fondoClaro);
+                jb.setBackground(sinFondo);
+                jb.setBorder(new MatteBorder(2, 2, 2, 2, fondoClaro));
+
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                jb.setForeground(fondoPresionado);
+                jb.setBackground(sinFondo);
+                jb.setBorder(new MatteBorder(2, 2, 2, 2, fondoPresionado));
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                jb.setForeground(fondoNormal);
+                jb.setBackground(sinFondo);
+                jb.setBorder(new MatteBorder(2, 2, 2, 2, fondoNormal));
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                jb.setForeground(fondoClaro);
+                jb.setBackground(sinFondo);
+                jb.setBorder(new MatteBorder(2, 2, 2, 2, fondoClaro));
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                jb.setBackground(sinFondo);
+                jb.setForeground(fondoNormal);
+                jb.setBorder(new MatteBorder(2, 2, 2, 2, fondoNormal));
+
             }
         });
 
@@ -173,6 +238,7 @@ public class Funciones {
         jl.setBorder(new MatteBorder(1, 1, 1, 1, Color.BLACK));
         jl.setFont(new Font("Leelawadee", 1, 20));
     }
+
     public void setStyleJLabelSmall(JLabel jl) {
         jl.setOpaque(true);
         jl.setBackground(azulApp);
@@ -183,6 +249,7 @@ public class Funciones {
         jl.setHorizontalTextPosition(JLabel.CENTER);
         jl.setFont(new Font("Leelawadee", 1, 14));
     }
+
     public void setStyleJLabelTable(JLabel jl) {
         jl.setOpaque(true);
         jl.setBackground(azulApp);
@@ -321,6 +388,30 @@ public class Funciones {
         protected void setThumbBounds(int x, int y, int width, int height) {
             super.setThumbBounds(x, y, width, height);
             scrollbar.repaint();
+        }
+    }
+
+    public static class CboListCellRenderer implements ListCellRenderer {
+
+        final Color colorPrincipal = new Color(3, 25, 38);
+        final Color fondoTxt = new Color(255, 255, 255, 15);
+        protected DefaultListCellRenderer defaultRenderer = new DefaultListCellRenderer();
+
+        @Override
+        public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean bln1) {
+            JLabel renderer = (JLabel) defaultRenderer.getListCellRendererComponent(list, value, index,
+                    isSelected, bln1);
+            list.setSelectionBackground(fondoTxt);
+            list.setSelectionForeground(Color.WHITE);
+            list.setBackground(fondoTxt);
+            if (!isSelected) {
+                renderer.setBackground(colorPrincipal);
+                renderer.setForeground(Color.WHITE);
+            } else {
+                renderer.setBackground(Color.WHITE);
+                renderer.setForeground(colorPrincipal);
+            }
+            return renderer;
         }
     }
 }

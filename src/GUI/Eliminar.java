@@ -1,17 +1,22 @@
 package GUI;
 
+import GUI.Recursos.Funciones;
+import java.awt.Graphics;
 import java.util.HashMap;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import src.automatas.*;
 
 public class Eliminar extends javax.swing.JPanel {
 
     HashMap<String, Automata> automatas = new HashMap<>();
+    Funciones f = new Funciones();
 
     public Eliminar(HashMap<String, Automata> automatas) {
         initComponents();
         this.automatas = automatas;
         allEmpty();
+        f.setStyleJButon(btnAceptar);
         if (!this.automatas.isEmpty()) {
             cbAutomata.removeAllItems();
             for (String s : automatas.keySet()) {
@@ -22,6 +27,15 @@ public class Eliminar extends javax.swing.JPanel {
     }
 
     public void allEmpty() {
+        f.setStyleJTextField(txtAceptacion);
+        f.setStyleJTextField(txtEstados);
+        f.setStyleJTextField(txtGamma);
+        f.setStyleJTextField(txtTipo);
+        f.setStyleJTextField(txtInicial);
+        f.setStyleJTextField(txtSigma);
+        f.setStyleJTextArea(txtTransiciones, jScrollPane1);
+        f.setStyleJComboBox(cbAutomata);
+
         txtAceptacion.setText("");
         txtEstados.setText("");
         txtGamma.setText("");
@@ -29,13 +43,13 @@ public class Eliminar extends javax.swing.JPanel {
         txtSigma.setText("");
         txtTransiciones.setText("");
         txtInicial.setText("");
-        txtInicial.setEnabled(false);
-        txtAceptacion.setEnabled(false);
-        txtEstados.setEnabled(false);
-        txtGamma.setEnabled(false);
-        txtTipo.setEnabled(false);
-        txtSigma.setEnabled(false);
-        txtTransiciones.setEnabled(false);
+        txtInicial.setEditable(false);
+        txtAceptacion.setEditable(false);
+        txtEstados.setEditable(false);
+        txtGamma.setEditable(false);
+        txtTipo.setEditable(false);
+        txtSigma.setEditable(false);
+        txtTransiciones.setEditable(false);
         jScrollPane1.setEnabled(false);
         cbAutomata.removeAllItems();
         cbAutomata.addItem("Ingresar nuevos automatas");
@@ -66,6 +80,14 @@ public class Eliminar extends javax.swing.JPanel {
         }
     }
 
+    @Override
+    public void paintComponent(Graphics g) {
+        ImageIcon imagen = new ImageIcon(getClass().getResource("/imagenes/fondo.png"));
+        g.drawImage(imagen.getImage(), 0, 0, getWidth(), getHeight(), null);
+        setOpaque(false);
+        super.paintComponent(g);
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -92,33 +114,47 @@ public class Eliminar extends javax.swing.JPanel {
 
         setBackground(new java.awt.Color(255, 0, 0));
         setPreferredSize(new java.awt.Dimension(750, 510));
+        setLayout(null);
 
         jLabel2.setBackground(new java.awt.Color(255, 255, 255));
         jLabel2.setFont(new java.awt.Font("Leelawadee", 0, 16)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel2.setText("Tipo de Automata");
         jLabel2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jLabel2.setPreferredSize(new java.awt.Dimension(175, 30));
+        jLabel2.setPreferredSize(new java.awt.Dimension(130, 30));
+        add(jLabel2);
+        jLabel2.setBounds(383, 124, 130, 30);
 
         txtTipo.setFont(new java.awt.Font("Leelawadee", 0, 24)); // NOI18N
         txtTipo.setPreferredSize(new java.awt.Dimension(175, 30));
+        add(txtTipo);
+        txtTipo.setBounds(517, 122, 175, 30);
 
         jLabel3.setBackground(new java.awt.Color(255, 255, 255));
         jLabel3.setFont(new java.awt.Font("Leelawadee", 0, 16)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel3.setText("Alfabeto Sigma");
         jLabel3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jLabel3.setPreferredSize(new java.awt.Dimension(175, 30));
+        add(jLabel3);
+        jLabel3.setBounds(10, 198, 175, 30);
 
         txtAceptacion.setFont(new java.awt.Font("Leelawadee", 0, 24)); // NOI18N
         txtAceptacion.setPreferredSize(new java.awt.Dimension(175, 30));
+        add(txtAceptacion);
+        txtAceptacion.setBounds(190, 230, 175, 30);
 
         jLabel4.setBackground(new java.awt.Color(255, 255, 255));
         jLabel4.setFont(new java.awt.Font("Leelawadee", 0, 16)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel4.setText("Estado Inicial");
         jLabel4.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jLabel4.setPreferredSize(new java.awt.Dimension(155, 30));
+        jLabel4.setPreferredSize(new java.awt.Dimension(130, 30));
+        add(jLabel4);
+        jLabel4.setBounds(383, 161, 130, 30);
 
         cbAutomata.setFont(new java.awt.Font("Leelawadee UI", 0, 9)); // NOI18N
         cbAutomata.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1" }));
@@ -128,62 +164,91 @@ public class Eliminar extends javax.swing.JPanel {
                 cbAutomataActionPerformed(evt);
             }
         });
+        add(cbAutomata);
+        cbAutomata.setBounds(190, 123, 175, 30);
 
         jLabel6.setBackground(new java.awt.Color(255, 255, 255));
         jLabel6.setFont(new java.awt.Font("Leelawadee", 0, 16)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel6.setText("Estados De Aceptacion");
         jLabel6.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jLabel6.setPreferredSize(new java.awt.Dimension(175, 30));
+        add(jLabel6);
+        jLabel6.setBounds(10, 236, 175, 30);
 
         txtSigma.setFont(new java.awt.Font("Leelawadee", 0, 24)); // NOI18N
         txtSigma.setPreferredSize(new java.awt.Dimension(175, 30));
+        add(txtSigma);
+        txtSigma.setBounds(190, 196, 175, 30);
 
         jLabel7.setBackground(new java.awt.Color(255, 255, 255));
         jLabel7.setFont(new java.awt.Font("Leelawadee", 0, 16)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel7.setText("Transiciones");
         jLabel7.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jLabel7.setPreferredSize(new java.awt.Dimension(175, 30));
+        add(jLabel7);
+        jLabel7.setBounds(10, 270, 175, 30);
 
         txtTransiciones.setColumns(20);
         txtTransiciones.setRows(5);
         txtTransiciones.setWrapStyleWord(true);
         jScrollPane1.setViewportView(txtTransiciones);
 
+        add(jScrollPane1);
+        jScrollPane1.setBounds(190, 270, 500, 163);
+
         txtEstados.setFont(new java.awt.Font("Leelawadee", 0, 24)); // NOI18N
         txtEstados.setPreferredSize(new java.awt.Dimension(175, 30));
+        add(txtEstados);
+        txtEstados.setBounds(190, 159, 175, 30);
 
         jlGamma.setBackground(new java.awt.Color(255, 255, 255));
         jlGamma.setFont(new java.awt.Font("Leelawadee", 0, 16)); // NOI18N
+        jlGamma.setForeground(new java.awt.Color(255, 255, 255));
         jlGamma.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jlGamma.setText("Alfabeto Gamma");
         jlGamma.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jlGamma.setPreferredSize(new java.awt.Dimension(175, 30));
+        jlGamma.setPreferredSize(new java.awt.Dimension(130, 30));
+        add(jlGamma);
+        jlGamma.setBounds(383, 198, 130, 30);
 
         jLabel5.setBackground(new java.awt.Color(255, 255, 255));
         jLabel5.setFont(new java.awt.Font("Leelawadee", 0, 16)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel5.setText("Automata Disponibles");
         jLabel5.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jLabel5.setPreferredSize(new java.awt.Dimension(175, 30));
+        add(jLabel5);
+        jLabel5.setBounds(11, 120, 175, 30);
 
         jLabel10.setBackground(new java.awt.Color(255, 255, 255));
         jLabel10.setFont(new java.awt.Font("Leelawadee", 0, 24)); // NOI18N
+        jLabel10.setForeground(new java.awt.Color(255, 255, 255));
         jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel10.setText("ELIMINAR AUTOMATA");
         jLabel10.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jLabel10.setPreferredSize(new java.awt.Dimension(155, 30));
+        add(jLabel10);
+        jLabel10.setBounds(0, 31, 750, 30);
 
         jLabel8.setBackground(new java.awt.Color(255, 255, 255));
         jLabel8.setFont(new java.awt.Font("Leelawadee", 0, 16)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel8.setText("Estados");
         jLabel8.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jLabel8.setPreferredSize(new java.awt.Dimension(175, 30));
+        add(jLabel8);
+        jLabel8.setBounds(10, 161, 175, 30);
 
         txtGamma.setFont(new java.awt.Font("Leelawadee", 0, 24)); // NOI18N
         txtGamma.setPreferredSize(new java.awt.Dimension(175, 30));
+        add(txtGamma);
+        txtGamma.setBounds(517, 196, 175, 30);
 
         btnAceptar.setFont(new java.awt.Font("Leelawadee UI", 0, 11)); // NOI18N
         btnAceptar.setText("Aceptar");
@@ -193,101 +258,13 @@ public class Eliminar extends javax.swing.JPanel {
                 btnAceptarActionPerformed(evt);
             }
         });
+        add(btnAceptar);
+        btnAceptar.setBounds(314, 453, 170, 35);
 
         txtInicial.setFont(new java.awt.Font("Leelawadee", 0, 24)); // NOI18N
         txtInicial.setPreferredSize(new java.awt.Dimension(175, 30));
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 750, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(10, 10, 10)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(5, 5, 5)
-                        .addComponent(cbAutomata, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(10, 10, 10)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(10, 10, 10)
-                        .addComponent(txtTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtEstados, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtInicial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtSigma, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jlGamma, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtGamma, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtAceptacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(10, 10, 10)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 525, javax.swing.GroupLayout.PREFERRED_SIZE))))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(btnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(267, 267, 267))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(31, 31, 31)
-                .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(58, 58, 58)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(3, 3, 3)
-                        .addComponent(cbAutomata, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(1, 1, 1)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtEstados, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtInicial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(9, 9, 9)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtSigma, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jlGamma, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtGamma, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(8, 8, 8)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtAceptacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(11, 11, 11)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
+        add(txtInicial);
+        txtInicial.setBounds(517, 159, 175, 30);
     }// </editor-fold>//GEN-END:initComponents
 
     private void cbAutomataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbAutomataActionPerformed
@@ -301,12 +278,18 @@ public class Eliminar extends javax.swing.JPanel {
                 "Elminar",
                 JOptionPane.OK_OPTION);
         if (i == JOptionPane.YES_OPTION) {
-            automatas.remove((String) cbAutomata.getSelectedItem());
-            cbAutomata.removeAllItems();
-            for (String s : automatas.keySet()) {
-                cbAutomata.addItem(s);
+            if (automatas.isEmpty()) {
+                JOptionPane.showMessageDialog(null,
+                        "No hay automatas disponibles para eliminar",
+                        "Lista de automatas vacia",
+                        JOptionPane.ERROR_MESSAGE);
+            } else {
+                automatas.remove((String) cbAutomata.getSelectedItem());
+                cbAutomata.removeAllItems();
+                for (String s : automatas.keySet()) {
+                    cbAutomata.addItem(s);
+                }
             }
-
         }
         if (automatas.isEmpty()) {
             allEmpty();

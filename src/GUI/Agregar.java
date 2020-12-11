@@ -1,28 +1,44 @@
 package GUI;
 
+import GUI.Recursos.Funciones;
+import java.awt.Graphics;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import src.automatas.*;
 
 public class Agregar extends javax.swing.JPanel {
 
     HashMap<String, Automata> automatas = new HashMap<>();
+    Funciones f = new Funciones();
 
     public Agregar(HashMap<String, Automata> automatas) {
         initComponents();
         this.automatas = automatas;
+        f.setStyleJButon(btnBorrar);
+        f.setStyleJButon(btnAceptar);
+        f.setStyleJButon(btnSeleccionar);
         allEmpty();
     }
 
     public void allEmpty() {
+        f.setStyleJTextField(txtAceptacion);
+        f.setStyleJTextField(txtEstados);
+        f.setStyleJTextField(txtGamma);
+        f.setStyleJTextField(txtNombre);
+        f.setStyleJTextField(txtSigma);
+        f.setStyleJTextArea(txtTransiciones, jScrollPane1);
+        f.setStyleJComboBox(cbAutomata);
+        f.setStyleJComboBox(cbInicial);
         txtAceptacion.setText("");
         txtEstados.setText("");
         txtGamma.setText("");
-        txtGamma.setEnabled(false);
+        txtGamma.setEditable(false);
         txtNombre.setText("");
         txtSigma.setText("");
         txtTransiciones.setText("");
@@ -37,6 +53,14 @@ public class Agregar extends javax.swing.JPanel {
                 .replaceAll("=\\[", "~").replaceAll(", ", ";")
                 .replaceAll("\\{", "").replaceAll("\\]\\}", "");
         return string;
+    }
+
+    @Override
+    public void paintComponent(Graphics g) {
+        ImageIcon imagen = new ImageIcon(getClass().getResource("/imagenes/fondo.png"));
+        g.drawImage(imagen.getImage(), 0, 0, getWidth(), getHeight(), null);
+        setOpaque(false);
+        super.paintComponent(g);
     }
 
     @SuppressWarnings("unchecked")
@@ -71,6 +95,7 @@ public class Agregar extends javax.swing.JPanel {
 
         jLabel2.setBackground(new java.awt.Color(255, 255, 255));
         jLabel2.setFont(new java.awt.Font("Leelawadee", 0, 16)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel2.setText("Nombre del Automata");
         jLabel2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -86,6 +111,7 @@ public class Agregar extends javax.swing.JPanel {
 
         jLabel3.setBackground(new java.awt.Color(255, 255, 255));
         jLabel3.setFont(new java.awt.Font("Leelawadee", 0, 16)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel3.setText("Alfabeto Sigma");
         jLabel3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -101,12 +127,14 @@ public class Agregar extends javax.swing.JPanel {
 
         jLabel4.setBackground(new java.awt.Color(255, 255, 255));
         jLabel4.setFont(new java.awt.Font("Leelawadee", 0, 16)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel4.setText("Estado Inicial");
         jLabel4.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jLabel4.setPreferredSize(new java.awt.Dimension(155, 30));
 
         cbAutomata.setFont(new java.awt.Font("Leelawadee UI", 0, 9)); // NOI18N
+        cbAutomata.setForeground(new java.awt.Color(255, 255, 255));
         cbAutomata.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Autómata Finito Determinista (AFD)", "Autómata Finito con Pila Determinista (AFPD)", "Autómata Finito con Pila No Determinista (AFPN)", "Autómata Finito con 2 Pilas (AF2P)", "Máquina de Turing – Modelo Estándar (MT)", "Máquina de Turing Modelo con una Cinta dividida en Pistas (MTP)", "Máquina de Turing Modelo con Múltiples Cintas (MTMC)", "Máquina de Turing No Determinista (MTN)" }));
         cbAutomata.setPreferredSize(new java.awt.Dimension(175, 30));
         cbAutomata.addActionListener(new java.awt.event.ActionListener() {
@@ -117,6 +145,7 @@ public class Agregar extends javax.swing.JPanel {
 
         jLabel6.setBackground(new java.awt.Color(255, 255, 255));
         jLabel6.setFont(new java.awt.Font("Leelawadee", 0, 16)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel6.setText("Estados De Aceptacion");
         jLabel6.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -132,6 +161,7 @@ public class Agregar extends javax.swing.JPanel {
 
         jLabel7.setBackground(new java.awt.Color(255, 255, 255));
         jLabel7.setFont(new java.awt.Font("Leelawadee", 0, 16)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel7.setText("Transiciones");
         jLabel7.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -147,8 +177,10 @@ public class Agregar extends javax.swing.JPanel {
         });
         jScrollPane1.setViewportView(txtTransiciones);
 
+        btnBorrar.setBackground(new java.awt.Color(255, 255, 255));
         btnBorrar.setFont(new java.awt.Font("Leelawadee UI", 0, 11)); // NOI18N
         btnBorrar.setText("Borrar Todo");
+        btnBorrar.setBorder(null);
         btnBorrar.setPreferredSize(new java.awt.Dimension(170, 35));
         btnBorrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -158,6 +190,8 @@ public class Agregar extends javax.swing.JPanel {
 
         btnSeleccionar.setFont(new java.awt.Font("Leelawadee UI", 0, 11)); // NOI18N
         btnSeleccionar.setText("Seleccionar");
+        btnSeleccionar.setBorder(null);
+        btnSeleccionar.setOpaque(false);
         btnSeleccionar.setPreferredSize(new java.awt.Dimension(170, 35));
         btnSeleccionar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -172,6 +206,11 @@ public class Agregar extends javax.swing.JPanel {
                 txtEstadosFocusLost(evt);
             }
         });
+        txtEstados.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtEstadosActionPerformed(evt);
+            }
+        });
         txtEstados.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtEstadosKeyTyped(evt);
@@ -180,6 +219,7 @@ public class Agregar extends javax.swing.JPanel {
 
         jlGamma.setBackground(new java.awt.Color(255, 255, 255));
         jlGamma.setFont(new java.awt.Font("Leelawadee", 0, 16)); // NOI18N
+        jlGamma.setForeground(new java.awt.Color(255, 255, 255));
         jlGamma.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jlGamma.setText("Alfabeto Gamma");
         jlGamma.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -187,12 +227,14 @@ public class Agregar extends javax.swing.JPanel {
 
         jLabel5.setBackground(new java.awt.Color(255, 255, 255));
         jLabel5.setFont(new java.awt.Font("Leelawadee", 0, 16)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel5.setText("Tipo de Automata");
         jLabel5.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jLabel5.setPreferredSize(new java.awt.Dimension(175, 30));
 
         cbInicial.setFont(new java.awt.Font("Leelawadee UI", 0, 11)); // NOI18N
+        cbInicial.setForeground(new java.awt.Color(255, 255, 255));
         cbInicial.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Esperando Estados" }));
         cbInicial.setPreferredSize(new java.awt.Dimension(175, 30));
         cbInicial.addActionListener(new java.awt.event.ActionListener() {
@@ -203,6 +245,7 @@ public class Agregar extends javax.swing.JPanel {
 
         jLabel10.setBackground(new java.awt.Color(255, 255, 255));
         jLabel10.setFont(new java.awt.Font("Leelawadee", 0, 24)); // NOI18N
+        jLabel10.setForeground(new java.awt.Color(255, 255, 255));
         jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel10.setText("AGREGAR AUTOMATA");
         jLabel10.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -210,6 +253,7 @@ public class Agregar extends javax.swing.JPanel {
 
         jLabel8.setBackground(new java.awt.Color(255, 255, 255));
         jLabel8.setFont(new java.awt.Font("Leelawadee", 0, 16)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel8.setText("Estados");
         jLabel8.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -234,6 +278,7 @@ public class Agregar extends javax.swing.JPanel {
 
         jLabel11.setBackground(new java.awt.Color(255, 255, 255));
         jLabel11.setFont(new java.awt.Font("Leelawadee", 0, 16)); // NOI18N
+        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
         jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel11.setText("Seleccionar Automata");
         jLabel11.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -271,8 +316,8 @@ public class Agregar extends javax.swing.JPanel {
                         .addComponent(cbAutomata, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(10, 10, 10)
                         .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(10, 10, 10)
-                        .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(10, 10, 10)
@@ -282,13 +327,16 @@ public class Agregar extends javax.swing.JPanel {
                         .addGap(10, 10, 10)
                         .addComponent(txtEstados, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(10, 10, 10)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 525, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnBorrar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(370, 370, 370)
-                        .addComponent(btnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(btnBorrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(10, 10, 10)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 525, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGap(365, 365, 365)
+                                .addComponent(btnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -343,17 +391,18 @@ public class Agregar extends javax.swing.JPanel {
                             .addComponent(txtGamma, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtSigma, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtSigma, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(11, 11, 11)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnBorrar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnBorrar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -384,7 +433,7 @@ public class Agregar extends javax.swing.JPanel {
             txtNombre.setText("Default AFPD");
             txtAceptacion.setText(afpd.getEstadoInicial());
             txtEstados.setText(afpd.getEstados().toString().replace("[", "").replace("]", ""));
-            txtGamma.setEnabled(true);
+            txtGamma.setEditable(true);
             txtGamma.setText(afpd.getAlfabetoPila().toString().replace("[", "").replace("]", ""));
             txtSigma.setText(afpd.getAlfabeto().toString().replace("[", "").replace("]", ""));
             txtTransiciones.setText(transiciones(afpd.getTransiciones()));
@@ -400,7 +449,7 @@ public class Agregar extends javax.swing.JPanel {
             txtNombre.setText("Default AFPN");
             txtAceptacion.setText(afpn.getEstadoInicial());
             txtEstados.setText(afpn.getEstados().toString().replace("[", "").replace("]", ""));
-            txtGamma.setEnabled(true);
+            txtGamma.setEditable(true);
             txtGamma.setText(afpn.getAlfabetoPila().toString().replace("[", "").replace("]", ""));
             txtSigma.setText(afpn.getAlfabeto().toString().replace("[", "").replace("]", ""));
             txtTransiciones.setText(transiciones(afpn.getTransiciones()));
@@ -416,7 +465,7 @@ public class Agregar extends javax.swing.JPanel {
             txtNombre.setText("Default AF2P");
             txtAceptacion.setText(af2p.getEstadoInicial());
             txtEstados.setText(af2p.getEstados().toString().replace("[", "").replace("]", ""));
-            txtGamma.setEnabled(true);
+            txtGamma.setEditable(true);
             txtGamma.setText(af2p.getAlfabetoPila().toString().replace("[", "").replace("]", ""));
             txtSigma.setText(af2p.getAlfabeto().toString().replace("[", "").replace("]", ""));
             txtTransiciones.setText(transiciones(af2p.getTransiciones()));
@@ -432,7 +481,7 @@ public class Agregar extends javax.swing.JPanel {
             txtNombre.setText("Default MT");
             txtAceptacion.setText(mt.getEstadoInicial());
             txtEstados.setText(mt.getEstados().toString().replace("[", "").replace("]", ""));
-            txtGamma.setEnabled(true);
+            txtGamma.setEditable(true);
             txtGamma.setText(mt.getAlfabetoPila().toString().replace("[", "").replace("]", ""));
             txtSigma.setText(mt.getAlfabeto().toString().replace("[", "").replace("]", ""));
             txtTransiciones.setText(transiciones(mt.getTransiciones()));
@@ -448,7 +497,7 @@ public class Agregar extends javax.swing.JPanel {
             txtNombre.setText("Default MTP");
             txtAceptacion.setText(mtp.getEstadoInicial());
             txtEstados.setText(mtp.getEstados().toString().replace("[", "").replace("]", ""));
-            txtGamma.setEnabled(true);
+            txtGamma.setEditable(true);
             txtGamma.setText(mtp.getAlfabetoPila().toString().replace("[", "").replace("]", ""));
             txtSigma.setText(mtp.getAlfabeto().toString().replace("[", "").replace("]", ""));
             txtTransiciones.setText(transiciones(mtp.getTransiciones()));
@@ -464,7 +513,7 @@ public class Agregar extends javax.swing.JPanel {
             txtNombre.setText("Deafault MTMC");
             txtAceptacion.setText(mtmc.getEstadoInicial());
             txtEstados.setText(mtmc.getEstados().toString().replace("[", "").replace("]", ""));
-            txtGamma.setEnabled(true);
+            txtGamma.setEditable(true);
             txtGamma.setText(mtmc.getAlfabetoPila().toString().replace("[", "").replace("]", ""));
             txtSigma.setText(mtmc.getAlfabeto().toString().replace("[", "").replace("]", ""));
             txtTransiciones.setText(transiciones(mtmc.getTransiciones()));
@@ -480,7 +529,7 @@ public class Agregar extends javax.swing.JPanel {
             txtNombre.setText("Deafault MTN");
             txtAceptacion.setText(mtn.getEstadoInicial());
             txtEstados.setText(mtn.getEstados().toString().replace("[", "").replace("]", ""));
-            txtGamma.setEnabled(true);
+            txtGamma.setEditable(true);
             txtGamma.setText(mtn.getAlfabetoPila().toString().replace("[", "").replace("]", ""));
             txtSigma.setText(mtn.getAlfabeto().toString().replace("[", "").replace("]", ""));
             txtTransiciones.setText(transiciones(mtn.getTransiciones()));
@@ -495,14 +544,14 @@ public class Agregar extends javax.swing.JPanel {
 
     private void cbAutomataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbAutomataActionPerformed
         if (cbAutomata.getSelectedIndex() == 0) {
-            txtGamma.setEnabled(false);
+            txtGamma.setEditable(false);
         } else {
-            txtGamma.setEnabled(true);
+            txtGamma.setEditable(true);
         }
     }//GEN-LAST:event_cbAutomataActionPerformed
 
     private void cbInicialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbInicialActionPerformed
-     
+
     }//GEN-LAST:event_cbInicialActionPerformed
 
     private void txtEstadosFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtEstadosFocusLost
@@ -512,11 +561,12 @@ public class Agregar extends javax.swing.JPanel {
             cbInicial.addItem("Esperando Estados");
             cbInicial.setEnabled(false);
         } else {
+            cbInicial.setEnabled(true);
             for (String s : estados) {
-                cbInicial.setEnabled(true);
                 cbInicial.addItem(s);
             }
         }
+        f.setStyleJComboBox(cbInicial);
     }//GEN-LAST:event_txtEstadosFocusLost
 
     private void txtNombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreKeyTyped
@@ -580,7 +630,12 @@ public class Agregar extends javax.swing.JPanel {
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
 
-        if (automatas.get(txtNombre.getText()) == null) {
+        if (automatas.get(txtNombre.getText()) == null
+                && !txtAceptacion.getText().equals("")
+                && !txtEstados.getText().equals("")
+                && !txtNombre.getText().equals("")
+                && !txtSigma.getText().equals("")
+                && !txtTransiciones.getText().equals("")) {
             int aceptar = cbAutomata.getSelectedIndex();
             ArrayList<String> estados = new ArrayList<>(Arrays.asList(txtEstados.getText().split(",")));
             ArrayList<String> estadosAceptacion = new ArrayList<>((Arrays.asList(txtAceptacion.getText().split(","))));
@@ -588,7 +643,7 @@ public class Agregar extends javax.swing.JPanel {
             ArrayList<String> gamma = new ArrayList<>();
             ArrayList<String> transiciones = new ArrayList<>(Arrays.asList(txtTransiciones.getText().split("\n")));
             String inicial = cbInicial.getItemAt(cbInicial.getSelectedIndex());
-            if (txtGamma.isEnabled()) {
+            if (txtGamma.isEditable()) {
                 gamma = new ArrayList<>(Arrays.asList(txtGamma.getText().split(",")));
             }
             switch (aceptar) {
@@ -664,17 +719,25 @@ public class Agregar extends javax.swing.JPanel {
                     automatas.put(txtNombre.getText(), mtn);
                     break;
             }
-            JOptionPane.showConfirmDialog(null,
-                    "Automata agregado satisfactoriamente",
-                    "Agregado exitosamente",
-                    JOptionPane.OK_OPTION);
-        }else{
-        JOptionPane.showConfirmDialog(null,
-                    "El automata ya esta agregado",
+            JLabel lb = new JLabel();
+            lb.setSize(50, 50);
+            JOptionPane.showMessageDialog(null,
+                    "El automata fue creado satisfactoriamente",
+                    "Automata creado",
+                    JOptionPane.CLOSED_OPTION,
+                    f.setImageBackground("/imagenes/exito.png", lb)
+            );
+        } else {
+            JOptionPane.showMessageDialog(null,
+                    "El automata ya esta agregado o los campos estan vacios",
                     "Agregado existente",
                     JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnAceptarActionPerformed
+
+    private void txtEstadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEstadosActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtEstadosActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
